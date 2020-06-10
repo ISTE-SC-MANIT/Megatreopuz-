@@ -9,7 +9,7 @@ import (
 func main() {
 	fmt.Println(`Hello world`)
 	fmt.Println(proto.LoginRequest{
-		Email:    "sample@mail.com",
-		Password: "sample@Password.com",
+		Password: "xxxxx",
+		Username: "xxxxx",
 	})
 }
