@@ -16,3 +16,6 @@
 
 # Generated files
 proto/*.pb.go
+
+# Environment files
+.env
