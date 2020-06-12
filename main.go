@@ -5,7 +5,6 @@ import (
 	"log"
 	"net"
 	"os"
-	"time"
 
 	"github.com/ISTE-SC-MANIT/megatreopuz-auth/auth"
 	"github.com/ISTE-SC-MANIT/megatreopuz-auth/proto"
@@ -16,8 +15,6 @@ import (
 	"google.golang.org/grpc"
 )
 
-const deadline = 10 * time.Second
-
 func main() {
 	// Load environment variables
 	err := godotenv.Load(".env")
@@ -26,27 +23,26 @@ func main() {
 	}
 
 	log.Print(`Connecting to MongoDB`)
-	// Connect to mongoDB
-	mongoCtx, mongoCancel := context.WithTimeout(context.Background(), deadline)
-	defer mongoCancel()
+	// Set mongoDB context
+	mongoCtx := context.Background()
+
+	// Connect to MongoDB
 	mongoClient, err := mongo.Connect(mongoCtx, options.Client().ApplyURI(
 		os.Getenv("MONGODB_ADDRESS"),
 	))
+	// Check for connection errors
 	if err != nil {
 		log.Fatalf("Ran into an error while connecting to MongDB: %v", err.Error())
 	}
-	log.Print(`Connected to MongoDB successfully`)
 
-	log.Print(`Pinging MongoDB successfully`)
+	log.Print(`Pinging MongoDB`)
+
 	// Test the mongoDB connection
 	err = mongoClient.Ping(mongoCtx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 	log.Print(`Pinged MongoDB successfully`)
-
-	// Defer closing the connection
-	defer mongoClient.Disconnect(mongoCtx)
 
 	// Connect to redis
 	redisClient := redis.NewClient(&redis.Options{
@@ -55,8 +51,7 @@ func main() {
 	})
 
 	// Make a redis context
-	redisCtx, redisCancel := context.WithTimeout(context.Background(), deadline)
-	defer redisCancel()
+	redisCtx := context.Background()
 
 	log.Print(`Connecting to Redis`)
 	// Test the redis connection
@@ -66,12 +61,14 @@ func main() {
 	}
 	log.Print(`Pinged Redis successfully`)
 
+	// Start a tcp listener on given port
 	port := os.Getenv("PORT")
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("Cannot listen on tcp port: %v. Error: %v", port, err.Error())
 	}
 
+	// Make a gRPC server
 	grpcServer := grpc.NewServer()
 	proto.RegisterAuthServiceServer(grpcServer, &auth.Server{
 		MongoClient:  mongoClient,
@@ -80,8 +77,9 @@ func main() {
 		RedisContext: redisCtx,
 	})
 
-	log.Print("Listening on ", port)
+	log.Print("Listening on port ", port)
 	log.Print("Starting gRPC server")
+	// Attach gRPC server to the listener
 	err = grpcServer.Serve(lis)
 
 	if err != nil {
