@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"time"
 
@@ -112,10 +113,13 @@ func (s *Server) Login(ctx context.Context, req *proto.LoginRequest) (*proto.Log
 	if errRefresh != nil {
 		return nil, status.Errorf(codes.Internal, "Entry of Redis Token in reddis was failed.")
 	}
-
+	fmt.Println(td.AtExpires)
+	fmt.Println(act)
 	return &proto.LoginResponse{
-		AcessToken:   td.AccessToken,
-		RefreshToken: td.RefreshToken,
+		AcessToken:         td.AccessToken,
+		RefreshToken:       td.RefreshToken,
+		AccessTokenExpiry:  act,
+		RefreshTokenExpiry: rft,
 	}, nil
 
 }
