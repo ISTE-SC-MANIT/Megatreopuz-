@@ -22,6 +22,10 @@ func (s *Server) Logout(ctx context.Context, req *proto.Empty) (*proto.Empty, er
 	}
 	refreshTokenSlice, ok := md["refresh"]
 	if ok {
+
+		redisCtx, cancel := context.WithTimeout(s.RedisContext, Deadline)
+		defer cancel()
+
 		refeshToken := refreshTokenSlice[0]
 		// Extracting the details of access tokens
 		rUUID, err := extractTokenMetadata(refeshToken)
@@ -38,9 +42,9 @@ func (s *Server) Logout(ctx context.Context, req *proto.Empty) (*proto.Empty, er
 				log.Println(`Error extracting access token information: `, err.Error())
 				return nil, status.Errorf(codes.InvalidArgument, "Invalid access token")
 			}
-			s.RedisClient.Del(ctx, aUUID)
+			s.RedisClient.Del(redisCtx, aUUID)
 		}
-		s.RedisClient.Del(ctx, rUUID)
+		s.RedisClient.Del(redisCtx, rUUID)
 	}
 
 	return &proto.Empty{}, nil
