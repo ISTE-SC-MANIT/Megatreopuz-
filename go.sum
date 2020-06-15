@@ -4,6 +4,8 @@ github.com/DataDog/sketches-go v0.0.0-20190923095040-43f19ad77ff7 h1:qELHH0AWCvf
 github.com/DataDog/sketches-go v0.0.0-20190923095040-43f19ad77ff7/go.mod h1:Q5DbzQ+3AkgGwymQO7aZFNP7ns2lZKGtvRBzRXfdi60=
 github.com/ISTE-SC-MANIT/megatreopuz-mongo-structs v0.0.0-20200612101156-0c2ee781f9a1 h1:QLZjYo4G94S9C/GmHofabq0WsvNaQKcLiESwBD/5hXM=
 github.com/ISTE-SC-MANIT/megatreopuz-mongo-structs v0.0.0-20200612101156-0c2ee781f9a1/go.mod h1:0pWiOQ9fZ525KQQ3ZwevMX9dAR0wM44hQEUuwjlnTzo=
+github.com/ISTE-SC-MANIT/megatreopuz-mongo-structs v0.0.0-20200612105712-b0bd504b6cb3 h1:zthWu0yvEOfTXCQe13jCGHTXn4uPXHf1nGZ4rcO+oyQ=
+github.com/ISTE-SC-MANIT/megatreopuz-mongo-structs v0.0.0-20200612105712-b0bd504b6cb3/go.mod h1:0pWiOQ9fZ525KQQ3ZwevMX9dAR0wM44hQEUuwjlnTzo=
 github.com/OneOfOne/xxhash v1.2.2 h1:KMrpdQIwFcEqXDklaen+P1axHaj9BSKzvpUUfnHldSE=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/benbjohnson/clock v1.0.0 h1:78Jk/r6m4wCi6sndMpty7A//t4dw/RW5fV4ZgDVfX1w=
