@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/ISTE-SC-MANIT/megatreopuz-auth/proto"
@@ -12,67 +13,70 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// Logout ... : rpc called to login
+// Logout : rpc called to log out
 func (s *Server) Logout(ctx context.Context, req *proto.Empty) (*proto.Empty, error) {
 
-	//Extracting the token from metadata of request
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
-		return nil, status.Errorf(codes.Internal, "Not able to extract metadatas")
+		return nil, status.Errorf(codes.Internal, "Not able to extract metadata.")
 	}
-	token := md["authorization"][0]
-
-	//Extracting the Details of tokens
-	au, err := ExtractAccessTokenMetadata(token)
-	if err != nil {
-
-		return nil, status.Errorf(codes.Unauthenticated, "Invalid Token")
+	refreshTokenSlice, ok := md["refresh"]
+	if ok {
+		refeshToken := refreshTokenSlice[0]
+		// Extracting the details of access tokens
+		rUUID, err := extractTokenMetadata(refeshToken)
+		if err != nil {
+			log.Println(`Error extracting refresh token information: `, err.Error())
+			return nil, status.Errorf(codes.InvalidArgument, "Invalid refresh token")
+		}
+		accessTokenSlice, ok := md["authorization"]
+		if ok {
+			accessToken := accessTokenSlice[0]
+			// Extracting the details of access tokens
+			aUUID, err := extractTokenMetadata(accessToken)
+			if err != nil {
+				log.Println(`Error extracting access token information: `, err.Error())
+				return nil, status.Errorf(codes.InvalidArgument, "Invalid access token")
+			}
+			s.RedisClient.Del(ctx, aUUID)
+		}
+		s.RedisClient.Del(ctx, rUUID)
 	}
-	//Deleting it from Redis Database
-	s.RedisClient.Del(ctx, au.AccessUUID)
+
 	return &proto.Empty{}, nil
 
 }
 
-//ExtractAccessTokenMetadata ...
-func ExtractAccessTokenMetadata(s string) (*AccessDetails, error) {
-	token, err := VerifyToken(s)
+func extractTokenMetadata(s string) (string, error) {
+	// Validate the accesstoken recieved
+	accesstoken, err := validateToken(s)
 	if err != nil {
-		return nil, err
+		return "", fmt.Errorf(`Error validating jwt accesstoken: %s`, err.Error())
 	}
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if ok && token.Valid {
-		accessUUID, ok := claims["access_uuid"].(string)
+
+	// Check the claims
+	claims, ok := accesstoken.Claims.(jwt.MapClaims)
+	if ok && accesstoken.Valid {
+		accessUUID, ok := claims["uuid"].(string)
 		if !ok {
-			return nil, err
+			return "", fmt.Errorf(`Cannot parse accesstoken uuid:  %s`, err.Error())
 		}
-		username, ok := claims["user_id"].(string)
-		if !ok {
-			return nil, err
-		}
-		return &AccessDetails{
-			AccessUUID: accessUUID,
-			Username:   username,
-		}, nil
+		return accessUUID, nil
 	}
-	return nil, err
+	return "", err
 }
 
-//VerifyToken ... : verifying the tokens
-func VerifyToken(s string) (*jwt.Token, error) {
-	tokenString := s
+func validateToken(tokenString string) (*jwt.Token, error) {
+	accesstoken, err := jwt.Parse(tokenString, func(accesstoken *jwt.Token) (interface{}, error) {
 
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		if _, ok := accesstoken.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", accesstoken.Header["alg"])
 		}
 
 		return []byte(os.Getenv("ACCESS_SECRET")), nil
 	})
 	if err != nil {
-
 		return nil, err
 	}
-	return token, nil
+	return accesstoken, nil
 }
