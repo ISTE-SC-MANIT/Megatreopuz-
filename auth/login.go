@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/ISTE-SC-MANIT/megatreopuz-auth/proto"
-	"github.com/golang/protobuf/ptypes"
 	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -57,12 +56,12 @@ func (s *Server) Login(ctx context.Context, req *proto.LoginRequest) (*proto.Log
 
 	now := time.Now()
 	// Protobuffer serializable timestamps
-	accessExpiryProto, err := ptypes.TimestampProto(accessToken.ExpiresTimestamp)
+	accessExpiryProto, err := TimestampProto(accessToken.ExpiresTimestamp)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "Invalid access token expiration time")
 	}
 
-	refreshExpiryProto, err := ptypes.TimestampProto(refreshToken.ExpiresTimestamp)
+	refreshExpiryProto, err := TimestampProto(refreshToken.ExpiresTimestamp)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "Invalid refresh token expiration time")
 	}
@@ -75,7 +74,7 @@ func (s *Server) Login(ctx context.Context, req *proto.LoginRequest) (*proto.Log
 	if errAccess != nil {
 		return nil, status.Errorf(codes.Internal, "Entry of access token to redis failed.")
 	}
-	errRefresh := s.RedisClient.Set(redisContext, refreshToken.UUID, username, accessToken.ExpiresTimestamp.Sub(now)).Err()
+	errRefresh := s.RedisClient.Set(redisContext, refreshToken.UUID, username, refreshToken.ExpiresTimestamp.Sub(now)).Err()
 	if errRefresh != nil {
 		return nil, status.Errorf(codes.Internal, "Entry of refresh token to reddis failed.")
 	}
