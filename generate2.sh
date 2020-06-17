@@ -1,1 +1,0 @@
-protoc -I=megatreopuz-protos --go_out=./  --proto_path=C:/Users/Devansh_Kumar_Sharma/go/src/github.com/golang/protobuf/ptypes/timestamp --proto_path=./
