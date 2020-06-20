@@ -83,7 +83,7 @@ func (s *Server) Login(ctx context.Context, req *proto.LoginRequest) (*proto.Log
 	return &proto.LoginResponse{
 		AcessToken:         accessToken.Token,
 		RefreshToken:       refreshToken.Token,
-		AccessTokenExpiry:  accessExpiryProto.String(),
-		RefreshTokenExpiry: refreshExpiryProto.String(),
+		AccessTokenExpiry:  accessExpiryProto,
+		RefreshTokenExpiry: refreshExpiryProto,
 	}, nil
 }
