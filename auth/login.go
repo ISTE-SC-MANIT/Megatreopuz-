@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/ISTE-SC-MANIT/megatreopuz-auth/proto"
+	"github.com/golang/protobuf/ptypes"
 	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -56,12 +57,12 @@ func (s *Server) Login(ctx context.Context, req *proto.LoginRequest) (*proto.Log
 
 	now := time.Now()
 	// Protobuffer serializable timestamps
-	accessExpiryProto, err := TimestampProto(accessToken.ExpiresTimestamp)
+	accessExpiryProto, err := ptypes.TimestampProto(accessToken.ExpiresTimestamp)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "Invalid access token expiration time")
 	}
 
-	refreshExpiryProto, err := TimestampProto(refreshToken.ExpiresTimestamp)
+	refreshExpiryProto, err := ptypes.TimestampProto(refreshToken.ExpiresTimestamp)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "Invalid refresh token expiration time")
 	}

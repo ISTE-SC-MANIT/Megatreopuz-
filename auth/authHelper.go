@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"os"
@@ -9,7 +8,6 @@ import (
 
 	"github.com/ISTE-SC-MANIT/megatreopuz-auth/proto"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/go-redis/redis/v8"
 )
 
 const (
@@ -20,18 +18,6 @@ const (
 	// This is time.Date(10000, 1, 1, 0, 0, 0, 0, time.UTC).Unix().
 	maxValidSeconds = 253402300800
 )
-
-// GetExpiryTime : Extracts expiry time of tokens
-func GetExpiryTime(ctx context.Context, client *redis.Client, tokenID string) (int64, error) {
-	redisCtx, cancel := context.WithTimeout(ctx, Deadline)
-	defer cancel()
-	ttl, Error := client.TTL(redisCtx, tokenID).Result()
-	if Error != nil {
-		return 0, Error
-	}
-	return int64(ttl.Seconds()), nil
-
-}
 
 //ExtractTokenMetadata : function to verify token  and extract redisID from it
 func ExtractTokenMetadata(s string) (string, error) {
