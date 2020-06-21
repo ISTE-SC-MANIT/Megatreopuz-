@@ -86,7 +86,7 @@ func (s *Server) Login(ctx context.Context, req *proto.LoginRequest) (*proto.Log
 	}
 
 	return &proto.LoginResponse{
-		AcessToken:         accessToken.Token,
+		AccessToken:        accessToken.Token,
 		RefreshToken:       refreshToken.Token,
 		AccessTokenExpiry:  accessExpiryProto,
 		RefreshTokenExpiry: refreshExpiryProto,
