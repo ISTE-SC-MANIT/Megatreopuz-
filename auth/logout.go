@@ -74,7 +74,7 @@ func validateToken(tokenString string) (*jwt.Token, error) {
 	accesstoken, err := jwt.Parse(tokenString, func(accesstoken *jwt.Token) (interface{}, error) {
 
 		if _, ok := accesstoken.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", accesstoken.Header["alg"])
+			return nil, fmt.Errorf("Unexpected signing method: %v", accesstoken.Header["alg"])
 		}
 
 		return []byte(os.Getenv("ACCESS_SECRET")), nil

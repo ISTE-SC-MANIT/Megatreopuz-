@@ -12,46 +12,46 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func renewRefreshToken(context context.Context, pipe redis.Pipeliner, client *redis.Client, refreshToken string) (newToken string, Error error) {
+func renewRefreshToken(context context.Context, pipe redis.Pipeliner, client *redis.Client, refreshToken string) (newToken *string, Error error) {
 	rUUID, err := ExtractTokenMetadata(refreshToken)
 	if err != nil {
-		return "", status.Errorf(codes.Internal, "Can't extract refresh Token from metadata")
+		return nil, status.Errorf(codes.Internal, "Can't extract refresh Token from metadata")
 	}
 	refreshTokenExpiryTime, err := client.TTL(context, rUUID).Result()
 	if err != nil {
-		return "", status.Errorf(codes.Internal, "Failed to get Expiry time for refresh token")
+		return nil, status.Errorf(codes.Internal, "Failed to get Expiry time for refresh token")
 	}
 	if refreshTokenExpiryTime > 1800 {
-		return "", nil
+		return nil, nil
 	}
 
 	Username, err := ExtractTokenMetadataUserName(refreshToken)
 	if err != nil {
-		return "", status.Errorf(codes.InvalidArgument, "Unable to extract user name from refresh token")
+		return nil, status.Errorf(codes.InvalidArgument, "Unable to extract user name from refresh token")
 	}
 	newRefreshToken, err := CreateRefreshToken(Username)
 	if err != nil {
-		return "", status.Errorf(codes.InvalidArgument, "Unable to create refresh Token")
+		return nil, status.Errorf(codes.InvalidArgument, "Unable to create refresh Token")
 	}
 	now := time.Now()
 	refreshDelErr := pipe.Del(context, rUUID)
 	if refreshDelErr != nil {
-		return "", status.Errorf(codes.Internal, "Unable to delete existing refresh token from reddis")
+		return nil, status.Errorf(codes.Internal, "Unable to delete existing refresh token from reddis")
 	}
 	refreshErr := pipe.Set(context, newRefreshToken.UUID, Username, newRefreshToken.ExpiresTimestamp.Sub(now)).Err()
 	if refreshErr != nil {
-		return "", status.Errorf(codes.Internal, "unable to save token in redis ")
+		return nil, status.Errorf(codes.Internal, "unable to save token in redis ")
 	}
 
-	return newRefreshToken.Token, nil
+	return &newRefreshToken.Token, nil
 
 }
 
-func renewAccessToken(context context.Context, pipe redis.Pipeliner, client *redis.Client, md metadata.MD, Username string) (newToken string, Error error) {
+func renewAccessToken(context context.Context, pipe redis.Pipeliner, client *redis.Client, md metadata.MD, Username string) (newToken *string, Error error) {
 
 	newAccessToken, err := CreateAccessToken(Username)
 	if err != nil {
-		return "", status.Errorf(codes.InvalidArgument, "Unable to create access Token")
+		return nil, status.Errorf(codes.InvalidArgument, "Unable to create access Token")
 	}
 	now := time.Now()
 	accessTokenSlice, ok := md["authorization"]
@@ -59,26 +59,26 @@ func renewAccessToken(context context.Context, pipe redis.Pipeliner, client *red
 		aUUID, err := ExtractTokenMetadata(accessTokenSlice[0])
 		if err != nil {
 			log.Println(`Error extracting access token information: `, err.Error())
-			return "", status.Errorf(codes.InvalidArgument, "Invalid accesss token")
+			return nil, status.Errorf(codes.InvalidArgument, "Invalid accesss token")
 		}
 		accessTokenExpiryTime, err := client.TTL(context, aUUID).Result()
 		if err != nil {
-			return "", status.Errorf(codes.Internal, "Failed to get Expiry time for access token")
+			return nil, status.Errorf(codes.Internal, "Failed to get Expiry time for access token")
 		}
 		if accessTokenExpiryTime > 120 {
-			return "", nil
+			return nil, nil
 		}
 		refreshDelErr := pipe.Del(context, aUUID)
 		if refreshDelErr != nil {
-			return "", status.Errorf(codes.Internal, "Unable to delete existing access token from reddis")
+			return nil, status.Errorf(codes.Internal, "Unable to delete existing access token from reddis")
 		}
 	}
 	refreshErr := pipe.Set(context, newAccessToken.UUID, Username, newAccessToken.ExpiresTimestamp.Sub(now)).Err()
 	if refreshErr != nil {
-		return "", status.Errorf(codes.Internal, "unable to save token in redis ")
+		return nil, status.Errorf(codes.Internal, "unable to save token in redis ")
 	}
 
-	return newAccessToken.Token, nil
+	return &newAccessToken.Token, nil
 
 }
 
@@ -97,8 +97,6 @@ func (s *Server) ValidateUser(ctx context.Context, req *proto.Empty) (*proto.Sta
 	if !ok {
 		return &proto.Status{
 			IsUserLoggedIn: false,
-			AccessToken:    "",
-			RefreshToken:   "",
 		}, nil
 
 	}
@@ -118,12 +116,21 @@ func (s *Server) ValidateUser(ctx context.Context, req *proto.Empty) (*proto.Sta
 	}
 	_, pipeError := pipe.Exec(redisContext)
 	if pipeError != nil {
-		return nil, status.Errorf(codes.Internal, "unable to perform redis operations ")
+		return nil, status.Errorf(codes.Internal, "Unable to perform redis operations ")
 	}
 
-	return &proto.Status{
+	response := &proto.Status{
 		IsUserLoggedIn: true,
-		AccessToken:    newAccessToken,
-		RefreshToken:   newRefreshToken}, nil
+	}
+
+	if newAccessToken != nil {
+		response.AccessToken = *newAccessToken
+	}
+
+	if newRefreshToken != nil {
+		response.RefreshToken = *newRefreshToken
+	}
+
+	return response, nil
 
 }
