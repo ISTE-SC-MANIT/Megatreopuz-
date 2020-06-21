@@ -18,8 +18,13 @@ func (s *Server) Login(ctx context.Context, req *proto.LoginRequest) (*proto.Log
 	// Extracting data from requests
 	username, password := req.GetUsername(), req.GetPassword()
 	if password == "" {
-		return nil, status.Errorf(codes.NotFound,
-			"User is not registered locally. Try signing in using google")
+		return nil, status.Errorf(codes.InvalidArgument,
+			"Password cannot be empty")
+	}
+
+	if username == "" {
+		return nil, status.Errorf(codes.InvalidArgument,
+			"Username cannot be empty")
 	}
 
 	// Getting user form the database
@@ -77,13 +82,13 @@ func (s *Server) Login(ctx context.Context, req *proto.LoginRequest) (*proto.Log
 	}
 	errRefresh := s.RedisClient.Set(redisContext, refreshToken.UUID, username, refreshToken.ExpiresTimestamp.Sub(now)).Err()
 	if errRefresh != nil {
-		return nil, status.Errorf(codes.Internal, "Entry of refresh token to reddis failed.")
+		return nil, status.Errorf(codes.Internal, "Entry of refresh token to redis failed.")
 	}
 
 	return &proto.LoginResponse{
-		AcessToken:         accessToken.Token,
+		AccessToken:        accessToken.Token,
 		RefreshToken:       refreshToken.Token,
-		AccessTokenExpiry:  accessExpiryProto.String(),
-		RefreshTokenExpiry: refreshExpiryProto.String(),
+		AccessTokenExpiry:  accessExpiryProto,
+		RefreshTokenExpiry: refreshExpiryProto,
 	}, nil
 }

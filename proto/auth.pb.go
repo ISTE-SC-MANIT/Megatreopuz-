@@ -7,6 +7,7 @@ import (
 	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	timestamp "github.com/golang/protobuf/ptypes/timestamp"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -72,13 +73,13 @@ func (m *LoginRequest) GetPassword() string {
 }
 
 type LoginResponse struct {
-	AcessToken           string   `protobuf:"bytes,1,opt,name=acessToken,proto3" json:"acessToken,omitempty"`
-	RefreshToken         string   `protobuf:"bytes,2,opt,name=refreshToken,proto3" json:"refreshToken,omitempty"`
-	AccessTokenExpiry    string   `protobuf:"bytes,3,opt,name=accessTokenExpiry,proto3" json:"accessTokenExpiry,omitempty"`
-	RefreshTokenExpiry   string   `protobuf:"bytes,4,opt,name=refreshTokenExpiry,proto3" json:"refreshTokenExpiry,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	AccessToken          string               `protobuf:"bytes,1,opt,name=accessToken,proto3" json:"accessToken,omitempty"`
+	RefreshToken         string               `protobuf:"bytes,2,opt,name=refreshToken,proto3" json:"refreshToken,omitempty"`
+	AccessTokenExpiry    *timestamp.Timestamp `protobuf:"bytes,3,opt,name=accessTokenExpiry,proto3" json:"accessTokenExpiry,omitempty"`
+	RefreshTokenExpiry   *timestamp.Timestamp `protobuf:"bytes,4,opt,name=refreshTokenExpiry,proto3" json:"refreshTokenExpiry,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
 }
 
 func (m *LoginResponse) Reset()         { *m = LoginResponse{} }
@@ -106,9 +107,9 @@ func (m *LoginResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_LoginResponse proto.InternalMessageInfo
 
-func (m *LoginResponse) GetAcessToken() string {
+func (m *LoginResponse) GetAccessToken() string {
 	if m != nil {
-		return m.AcessToken
+		return m.AccessToken
 	}
 	return ""
 }
@@ -120,18 +121,18 @@ func (m *LoginResponse) GetRefreshToken() string {
 	return ""
 }
 
-func (m *LoginResponse) GetAccessTokenExpiry() string {
+func (m *LoginResponse) GetAccessTokenExpiry() *timestamp.Timestamp {
 	if m != nil {
 		return m.AccessTokenExpiry
 	}
-	return ""
+	return nil
 }
 
-func (m *LoginResponse) GetRefreshTokenExpiry() string {
+func (m *LoginResponse) GetRefreshTokenExpiry() *timestamp.Timestamp {
 	if m != nil {
 		return m.RefreshTokenExpiry
 	}
-	return ""
+	return nil
 }
 
 type Empty struct {
@@ -165,53 +166,6 @@ func (m *Empty) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Empty proto.InternalMessageInfo
 
-type Timestamp struct {
-	Seconds              int64    `protobuf:"varint,1,opt,name=seconds,proto3" json:"seconds,omitempty"`
-	Nanos                int32    `protobuf:"varint,2,opt,name=nanos,proto3" json:"nanos,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *Timestamp) Reset()         { *m = Timestamp{} }
-func (m *Timestamp) String() string { return proto.CompactTextString(m) }
-func (*Timestamp) ProtoMessage()    {}
-func (*Timestamp) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8bbd6f3875b0e874, []int{3}
-}
-
-func (m *Timestamp) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Timestamp.Unmarshal(m, b)
-}
-func (m *Timestamp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Timestamp.Marshal(b, m, deterministic)
-}
-func (m *Timestamp) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Timestamp.Merge(m, src)
-}
-func (m *Timestamp) XXX_Size() int {
-	return xxx_messageInfo_Timestamp.Size(m)
-}
-func (m *Timestamp) XXX_DiscardUnknown() {
-	xxx_messageInfo_Timestamp.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Timestamp proto.InternalMessageInfo
-
-func (m *Timestamp) GetSeconds() int64 {
-	if m != nil {
-		return m.Seconds
-	}
-	return 0
-}
-
-func (m *Timestamp) GetNanos() int32 {
-	if m != nil {
-		return m.Nanos
-	}
-	return 0
-}
-
 type Status struct {
 	IsUserLoggedIn       bool     `protobuf:"varint,1,opt,name=isUserLoggedIn,proto3" json:"isUserLoggedIn,omitempty"`
 	AccessToken          string   `protobuf:"bytes,2,opt,name=accessToken,proto3" json:"accessToken,omitempty"`
@@ -225,7 +179,7 @@ func (m *Status) Reset()         { *m = Status{} }
 func (m *Status) String() string { return proto.CompactTextString(m) }
 func (*Status) ProtoMessage()    {}
 func (*Status) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8bbd6f3875b0e874, []int{4}
+	return fileDescriptor_8bbd6f3875b0e874, []int{3}
 }
 
 func (m *Status) XXX_Unmarshal(b []byte) error {
@@ -349,7 +303,6 @@ func init() {
 	proto.RegisterType((*LoginRequest)(nil), "auth.LoginRequest")
 	proto.RegisterType((*LoginResponse)(nil), "auth.LoginResponse")
 	proto.RegisterType((*Empty)(nil), "auth.Empty")
-	proto.RegisterType((*Timestamp)(nil), "auth.Timestamp")
 	proto.RegisterType((*Status)(nil), "auth.Status")
 	proto.RegisterType((*PasswordRecoverySendEmailRequest)(nil), "auth.PasswordRecoverySendEmailRequest")
 	proto.RegisterType((*PasswordRecoverySendEmailResponse)(nil), "auth.PasswordRecoverySendEmailResponse")

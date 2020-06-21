@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/ISTE-SC-MANIT/megatreopuz-auth/proto"
@@ -12,139 +11,146 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type TokenChannel struct {
+const refreshRenewWindow = time.Second * 1800
+const accessRenewWindow = time.Second * 120
+
+type tokenChannel struct {
 	token *string
 	Err   error
 }
 
-func renewRefreshToken(context context.Context, pipe redis.Pipeliner, client *redis.Client, refreshToken string, c chan *TokenChannel) (newToken *string, Error error) {
-	rUUID, err := ExtractTokenMetadata(refreshToken)
+func renewRefreshToken(context context.Context, client redis.Client, pipe redis.Pipeliner, refreshToken RefreshTokenParsed, c chan *tokenChannel) {
+	refreshTokenExpiryTime, err := client.TTL(context, refreshToken.UUID).Result()
+
 	if err != nil {
-		c <- &TokenChannel{token: nil, Err: err}
-		return nil, status.Errorf(codes.Internal, "Can't extract refresh Token from metadata")
-	}
-	refreshTokenExpiryTime, err := client.TTL(context, rUUID).Result()
-	if err != nil {
-		c <- &TokenChannel{token: nil, Err: err}
-		return nil, status.Errorf(codes.Internal, "Failed to get Expiry time for refresh token")
-	}
-	if refreshTokenExpiryTime > 1800 {
-		c <- &TokenChannel{token: nil, Err: nil}
-		return nil, nil
+		c <- &tokenChannel{token: nil, Err: err}
+		return
 	}
 
-	Username, err := ExtractTokenMetadataUserName(refreshToken)
-	if err != nil {
-		c <- &TokenChannel{token: nil, Err: err}
-		return nil, status.Errorf(codes.InvalidArgument, "Unable to extract user name from refresh token")
+	if refreshTokenExpiryTime > refreshRenewWindow {
+		c <- &tokenChannel{token: nil, Err: nil}
+		return
 	}
-	newRefreshToken, err := CreateRefreshToken(Username)
-	if err != nil {
-		c <- &TokenChannel{token: nil, Err: err}
-		return nil, status.Errorf(codes.InvalidArgument, "Unable to create refresh Token")
-	}
-	now := time.Now()
-	refreshDelErr := pipe.Del(context, rUUID)
-	if refreshDelErr != nil {
-		c <- &TokenChannel{token: nil, Err: err}
-		return nil, status.Errorf(codes.Internal, "Unable to delete existing refresh token from reddis")
-	}
-	refreshErr := pipe.Set(context, newRefreshToken.UUID, Username, newRefreshToken.ExpiresTimestamp.Sub(now)).Err()
-	if refreshErr != nil {
-		c <- &TokenChannel{token: nil, Err: err}
-		return nil, status.Errorf(codes.Internal, "unable to save token in redis ")
-	}
-	c <- &TokenChannel{token: &newRefreshToken.Token, Err: nil}
-	return &newRefreshToken.Token, nil
 
+	newRefreshToken, err := CreateRefreshToken(refreshToken.Username)
+	if err != nil {
+		c <- &tokenChannel{token: nil, Err: err}
+		return
+	}
+
+	err = pipe.Del(context, refreshToken.UUID).Err()
+	if err != nil {
+		c <- &tokenChannel{token: nil, Err: err}
+		return
+	}
+
+	err = pipe.Set(context, newRefreshToken.UUID, refreshToken.Username, newRefreshToken.ExpiresTimestamp.Sub(time.Now())).Err()
+
+	if err != nil {
+		c <- &tokenChannel{token: nil, Err: err}
+		return
+	}
+	c <- &tokenChannel{token: &newRefreshToken.Token, Err: nil}
 }
 
-func renewAccessToken(context context.Context, pipe redis.Pipeliner, client *redis.Client, md metadata.MD, Username string, c chan *TokenChannel) (newToken *string, Error error) {
+func renewAccessToken(context context.Context, client redis.Client, pipe redis.Pipeliner, accessToken *AccessTokenParsed, username string, c chan *tokenChannel) {
+	if accessToken != nil {
 
-	newAccessToken, err := CreateAccessToken(Username)
+		accessTokenExpiryTime, err := client.TTL(context, accessToken.UUID).Result()
+
+		if err != nil {
+			c <- &tokenChannel{token: nil, Err: err}
+			return
+		}
+		if accessTokenExpiryTime > refreshRenewWindow {
+			c <- &tokenChannel{token: nil, Err: nil}
+			return
+		}
+		err = pipe.Del(context, accessToken.UUID).Err()
+		if err != nil {
+			c <- &tokenChannel{token: nil, Err: err}
+			return
+		}
+
+	}
+	// Will expire soon or has already expired
+	newAccessToken, err := CreateRefreshToken(username)
 	if err != nil {
-		c <- &TokenChannel{token: nil, Err: err}
-		return nil, status.Errorf(codes.InvalidArgument, "Unable to create access Token")
+		c <- &tokenChannel{token: nil, Err: err}
+		return
 	}
-	now := time.Now()
-	accessTokenSlice, ok := md["authorization"]
-	if ok && accessTokenSlice[0] != "" {
-		aUUID, err := ExtractTokenMetadata(accessTokenSlice[0])
-		if err != nil {
-			c <- &TokenChannel{token: nil, Err: err}
-			log.Println(`Error extracting access token information: `, err.Error())
-			return nil, status.Errorf(codes.InvalidArgument, "Invalid accesss token")
-		}
-		accessTokenExpiryTime, err := client.TTL(context, aUUID).Result()
-		if err != nil {
-			c <- &TokenChannel{token: nil, Err: err}
-			return nil, status.Errorf(codes.Internal, "Failed to get Expiry time for access token")
-		}
-		if accessTokenExpiryTime > 120 {
-			c <- &TokenChannel{token: nil, Err: nil}
-			return nil, nil
-		}
-		refreshDelErr := pipe.Del(context, aUUID)
-		if refreshDelErr != nil {
-			c <- &TokenChannel{token: nil, Err: err}
-			return nil, status.Errorf(codes.Internal, "Unable to delete existing access token from reddis")
-		}
-	}
-	refreshErr := pipe.Set(context, newAccessToken.UUID, Username, newAccessToken.ExpiresTimestamp.Sub(now)).Err()
-	if refreshErr != nil {
-		c <- &TokenChannel{token: nil, Err: err}
-		return nil, status.Errorf(codes.Internal, "unable to save token in redis ")
-	}
-	c <- &TokenChannel{token: &newAccessToken.Token, Err: nil}
-	return &newAccessToken.Token, nil
 
+	err = pipe.Set(context, newAccessToken.UUID, username, newAccessToken.ExpiresTimestamp.Sub(time.Now())).Err()
+
+	if err != nil {
+		c <- &tokenChannel{token: nil, Err: err}
+		return
+	}
+	c <- &tokenChannel{token: &newAccessToken.Token, Err: nil}
 }
 
-// ValidateUser : rpc called before every request
+// ValidateUser : rpc to validate user session
 func (s *Server) ValidateUser(ctx context.Context, req *proto.Empty) (*proto.Status, error) {
-	redisContext, cancel := context.WithTimeout(s.RedisContext, Deadline)
-	defer cancel()
-	pipe := s.RedisClient.Pipeline()
+
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		return nil, status.Errorf(codes.Internal, "Not able to extract metadata.")
 	}
-	refreshTokenSlice, ok := md["refresh"]
-	if !ok {
+
+	tokenData, err := ExtractTokensFromMetata(md)
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "Invalid metadata: %s", err.Error())
+	}
+
+	redisContext, cancel := context.WithTimeout(s.RedisContext, time.Minute*10)
+	defer cancel()
+	pipe := s.RedisClient.Pipeline()
+
+	if tokenData == nil {
 		return &proto.Status{
 			IsUserLoggedIn: false,
 		}, nil
-
 	}
-	refreshToken := refreshTokenSlice[0]
-	Username, err := ExtractTokenMetadataUserName(refreshToken)
+	refreshExists, err := s.RedisClient.Exists(redisContext, tokenData.Refresh.UUID).Result()
+
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "Can't extract refresh Token from metadata")
+		return nil, status.Errorf(codes.InvalidArgument, "Could not check refresh token existence: %s", err.Error())
 	}
 
-	c := make(chan *TokenChannel)
-	go renewRefreshToken(redisContext, pipe, s.RedisClient, refreshTokenSlice[0], c)
-	newRefreshTokenChannel := <-c
-	if newRefreshTokenChannel.Err != nil {
-		return nil, status.Errorf(codes.Internal, string(err.Error()))
+	if refreshExists == 0 {
+		return &proto.Status{
+			IsUserLoggedIn: false,
+		}, nil
 	}
-	go renewAccessToken(redisContext, pipe, s.RedisClient, md, Username, c)
-	newAccessTokenChannel := <-c
-	if newAccessTokenChannel.Err != nil {
-		return nil, status.Errorf(codes.Internal, string(err.Error()))
+
+	result := &proto.Status{
+		IsUserLoggedIn: true,
 	}
+
+	refreshChannel := make(chan *tokenChannel)
+	go renewRefreshToken(redisContext, *s.RedisClient, pipe, tokenData.Refresh, refreshChannel)
+
+	accessChannel := make(chan *tokenChannel)
+	go renewAccessToken(redisContext, *s.RedisClient, pipe, tokenData.Access, tokenData.Refresh.Username, accessChannel)
+	t := <-accessChannel
+	if t.Err != nil {
+		return nil, status.Errorf(codes.Internal, "Could not renew access token: ", t.Err.Error())
+	}
+	if t.token != nil {
+		result.AccessToken = *t.token
+	}
+
+	t = <-refreshChannel
+	if t.Err != nil {
+		return nil, status.Errorf(codes.Internal, "Could not renew refresh token: ", t.Err.Error())
+	}
+	if t.token != nil {
+		result.RefreshToken = *t.token
+	}
+
 	_, pipeError := pipe.Exec(redisContext)
 	if pipeError != nil {
-		return nil, status.Errorf(codes.Internal, "unable to perform redis operations ")
-	}
-
-	result := &proto.Status{IsUserLoggedIn: true}
-
-	if newRefreshTokenChannel.token != nil {
-		result.RefreshToken = *newRefreshTokenChannel.token
-	}
-	if newAccessTokenChannel.token != nil {
-		result.AccessToken = *newAccessTokenChannel.token
+		return nil, status.Errorf(codes.Internal, "Unable to perform redis operations ")
 	}
 
 	return result, nil

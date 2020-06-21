@@ -28,9 +28,9 @@ func (s *Server) RecoverPasswordSendEmail(ctx context.Context, req *proto.Passwo
 	}
 
 	auth := smtp.PlainAuth("", "kdevanshsharma23@gmail.com", "iitmumbai", "smtp.gmail.com")
-	to := []string{"dksofficial23@gmail.com"}
-	msg := []byte("To: billy@microsoft.com\r\n" +
-		"Subject: Why are you not using Mailtrap yet?\r\n" +
+	to := []string{user.Email}
+	msg := []byte("To:" + user.Email +
+		"Subject: Password recovery email for megatreopuz\r\n" +
 		"\r\n" +
 		"Here’s the space for our great sales pitch\r\n")
 
