@@ -20,3 +20,13 @@ func GetUserfromDatabase(ctx context.Context, client *mongo.Client, username str
 	}
 	return result, nil
 }
+func GetUserfromDatabaseByEmail(ctx context.Context, client *mongo.Client, email string) (*user.User, error) {
+	mongoCtx, cancel := context.WithTimeout(ctx, Deadline)
+	defer cancel()
+	result := &user.User{}
+	err := client.Database(os.Getenv("MONGODB_DATABASE")).Collection(os.Getenv("MONGODB_USERCOLLECTION")).FindOne(mongoCtx, bson.M{"email": email}).Decode(&result)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
