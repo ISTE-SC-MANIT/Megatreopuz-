@@ -71,7 +71,7 @@ func renewAccessToken(context context.Context, client redis.Client, pipe redis.P
 			c <- &tokenChannel{token: nil, err: err}
 			return
 		}
-		if accessTokenExpiryTime > refreshRenewWindow {
+		if accessTokenExpiryTime > accessRenewWindow {
 			c <- &tokenChannel{token: nil, err: nil}
 			return
 		}
@@ -83,7 +83,7 @@ func renewAccessToken(context context.Context, client redis.Client, pipe redis.P
 
 	}
 	// Will expire soon or has already expired
-	newAccessToken, err := CreateRefreshToken(username)
+	newAccessToken, err := CreateAccessToken(username)
 	if err != nil {
 		c <- &tokenChannel{token: nil, err: err}
 		return
