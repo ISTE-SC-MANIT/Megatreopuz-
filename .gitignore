@@ -17,4 +17,4 @@
 # Environment files
 .env
 
-.proto
+/proto
