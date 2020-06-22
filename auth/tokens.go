@@ -85,11 +85,13 @@ func CreateRefreshToken(username string) (*RefreshToken, error) {
 // RefreshTokenParsed : Refresh token information gained from metadata
 type RefreshTokenParsed struct {
 	UUID, Username string
+	ExpiresTimestamp time.Time
 }
 
 // AccessTokenParsed : Access token information gained from metadata
 type AccessTokenParsed struct {
 	UUID, Username string
+	ExpiresTimestamp time.Time
 }
 
 // MetadataInfo : Information extracted from gRPC metadata

@@ -6,6 +6,8 @@ import (
 
 	"github.com/ISTE-SC-MANIT/megatreopuz-auth/proto"
 	"github.com/go-redis/redis/v8"
+	"github.com/golang/protobuf/ptypes"
+	"github.com/golang/protobuf/ptypes/timestamp"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
@@ -15,42 +17,49 @@ const refreshRenewWindow = time.Second * 1800
 const accessRenewWindow = time.Second * 120
 
 type tokenChannel struct {
-	token *string
-	Err   error
+	token   *string
+	err     error
+	expires *timestamp.Timestamp
 }
 
 func renewRefreshToken(context context.Context, client redis.Client, pipe redis.Pipeliner, refreshToken RefreshTokenParsed, c chan *tokenChannel) {
 	refreshTokenExpiryTime, err := client.TTL(context, refreshToken.UUID).Result()
 
 	if err != nil {
-		c <- &tokenChannel{token: nil, Err: err}
+		c <- &tokenChannel{token: nil, err: err}
 		return
 	}
 
 	if refreshTokenExpiryTime > refreshRenewWindow {
-		c <- &tokenChannel{token: nil, Err: nil}
+		c <- &tokenChannel{token: nil, err: nil}
 		return
 	}
 
 	newRefreshToken, err := CreateRefreshToken(refreshToken.Username)
 	if err != nil {
-		c <- &tokenChannel{token: nil, Err: err}
+		c <- &tokenChannel{token: nil, err: err}
 		return
 	}
 
 	err = pipe.Del(context, refreshToken.UUID).Err()
 	if err != nil {
-		c <- &tokenChannel{token: nil, Err: err}
+		c <- &tokenChannel{token: nil, err: err}
 		return
 	}
 
 	err = pipe.Set(context, newRefreshToken.UUID, refreshToken.Username, newRefreshToken.ExpiresTimestamp.Sub(time.Now())).Err()
 
 	if err != nil {
-		c <- &tokenChannel{token: nil, Err: err}
+		c <- &tokenChannel{token: nil, err: err}
 		return
 	}
-	c <- &tokenChannel{token: &newRefreshToken.Token, Err: nil}
+
+	expires, err := ptypes.TimestampProto(newRefreshToken.ExpiresTimestamp)
+	if err != nil {
+		c <- &tokenChannel{token: nil, err: err}
+		return
+	}
+	c <- &tokenChannel{token: &newRefreshToken.Token, err: nil, expires: expires}
 }
 
 func renewAccessToken(context context.Context, client redis.Client, pipe redis.Pipeliner, accessToken *AccessTokenParsed, username string, c chan *tokenChannel) {
@@ -59,16 +68,16 @@ func renewAccessToken(context context.Context, client redis.Client, pipe redis.P
 		accessTokenExpiryTime, err := client.TTL(context, accessToken.UUID).Result()
 
 		if err != nil {
-			c <- &tokenChannel{token: nil, Err: err}
+			c <- &tokenChannel{token: nil, err: err}
 			return
 		}
 		if accessTokenExpiryTime > refreshRenewWindow {
-			c <- &tokenChannel{token: nil, Err: nil}
+			c <- &tokenChannel{token: nil, err: nil}
 			return
 		}
 		err = pipe.Del(context, accessToken.UUID).Err()
 		if err != nil {
-			c <- &tokenChannel{token: nil, Err: err}
+			c <- &tokenChannel{token: nil, err: err}
 			return
 		}
 
@@ -76,17 +85,22 @@ func renewAccessToken(context context.Context, client redis.Client, pipe redis.P
 	// Will expire soon or has already expired
 	newAccessToken, err := CreateRefreshToken(username)
 	if err != nil {
-		c <- &tokenChannel{token: nil, Err: err}
+		c <- &tokenChannel{token: nil, err: err}
 		return
 	}
 
 	err = pipe.Set(context, newAccessToken.UUID, username, newAccessToken.ExpiresTimestamp.Sub(time.Now())).Err()
 
 	if err != nil {
-		c <- &tokenChannel{token: nil, Err: err}
+		c <- &tokenChannel{token: nil, err: err}
 		return
 	}
-	c <- &tokenChannel{token: &newAccessToken.Token, Err: nil}
+	expires, err := ptypes.TimestampProto(newAccessToken.ExpiresTimestamp)
+	if err != nil {
+		c <- &tokenChannel{token: nil, err: err}
+		return
+	}
+	c <- &tokenChannel{token: &newAccessToken.Token, err: nil, expires: expires}
 }
 
 // ValidateUser : rpc to validate user session
@@ -133,20 +147,22 @@ func (s *Server) ValidateUser(ctx context.Context, req *proto.Empty) (*proto.Sta
 	accessChannel := make(chan *tokenChannel)
 	go renewAccessToken(redisContext, *s.RedisClient, pipe, tokenData.Access, tokenData.Refresh.Username, accessChannel)
 	t := <-accessChannel
-	if t.Err != nil {
-		return nil, status.Errorf(codes.Internal, "Could not renew access token: ", t.Err.Error())
+	if t.err != nil {
+		return nil, status.Errorf(codes.Internal, "Could not renew access token: ", t.err.Error())
 	}
 	if t.token != nil {
 		result.AccessToken = *t.token
 	}
+	result.AccessTokenExpiry = t.expires
 
 	t = <-refreshChannel
-	if t.Err != nil {
-		return nil, status.Errorf(codes.Internal, "Could not renew refresh token: ", t.Err.Error())
+	if t.err != nil {
+		return nil, status.Errorf(codes.Internal, "Could not renew refresh token: ", t.err.Error())
 	}
 	if t.token != nil {
 		result.RefreshToken = *t.token
 	}
+	result.RefreshTokenExpiry = t.expires
 
 	_, pipeError := pipe.Exec(redisContext)
 	if pipeError != nil {
