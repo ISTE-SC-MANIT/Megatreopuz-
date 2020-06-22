@@ -20,6 +20,8 @@ func GetUserfromDatabase(ctx context.Context, client *mongo.Client, username str
 	}
 	return result, nil
 }
+
+// GetUserfromDatabaseByEmail : Getting user from database using email
 func GetUserfromDatabaseByEmail(ctx context.Context, client *mongo.Client, email string) (*user.User, error) {
 	mongoCtx, cancel := context.WithTimeout(ctx, Deadline)
 	defer cancel()

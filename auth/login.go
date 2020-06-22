@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/ISTE-SC-MANIT/megatreopuz-auth/proto"
@@ -48,7 +47,6 @@ func (s *Server) Login(ctx context.Context, req *proto.LoginRequest) (*proto.Log
 	accessToken, err := CreateAccessToken(username)
 
 	if err != nil {
-		log.Println("Error while creating access token: ", err.Error())
 		return nil, status.Errorf(codes.Internal, "Signing access token failed.")
 	}
 
@@ -56,7 +54,6 @@ func (s *Server) Login(ctx context.Context, req *proto.LoginRequest) (*proto.Log
 	refreshToken, err := CreateRefreshToken(username)
 
 	if err != nil {
-		log.Println("Error while creating refresh token: ", err.Error())
 		return nil, status.Errorf(codes.Internal, "Signing refresh token failed.")
 	}
 

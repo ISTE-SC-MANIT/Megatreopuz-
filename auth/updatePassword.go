@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-	"log"
 	"os"
 
 	"github.com/ISTE-SC-MANIT/megatreopuz-auth/proto"
@@ -31,7 +30,7 @@ func (s *Server) UpdatePassword(ctx context.Context, req *proto.UpdatePasswordRe
 
 	s.RedisClient.Del(redisContext, passwordID)
 
-	result, err := s.MongoClient.Database(os.Getenv("MONGODB_DATABASE")).Collection(os.Getenv("MONGODB_USERCOLLECTION")).UpdateOne(
+	_, err = s.MongoClient.Database(os.Getenv("MONGODB_DATABASE")).Collection(os.Getenv("MONGODB_USERCOLLECTION")).UpdateOne(
 		ctx,
 		bson.M{"email": bson.M{"$eq": email}},
 		bson.M{"$set": bson.M{"password": string(hashedPassword)}})
@@ -39,7 +38,6 @@ func (s *Server) UpdatePassword(ctx context.Context, req *proto.UpdatePasswordRe
 		return nil, status.Errorf(codes.Internal, err.Error())
 	}
 
-	log.Print(result)
 	return &proto.Empty{}, nil
 
 }
