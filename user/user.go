@@ -18,6 +18,7 @@ type User struct {
 	Country           string              `bson:"country"`
 	Year              int                 `bson:"year"`
 	Rank              int                 `bson:"rank"`
-	MemberSince       primitive.DateTime  `bson:"memberSince"`
+	CreatedAt         primitive.DateTime  `bson:"createdAt"`
+	UpdatedAt         primitive.DateTime  `bson:"updatedAt"`
 	AnsweredQuestions []QuestionsAnswered `bson:"answeredQuestions"`
 }
