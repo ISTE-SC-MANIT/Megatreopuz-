@@ -17,4 +17,5 @@
 # Environment files
 .env
 
-/proto
+# Ignore firebase credentials
+megatreopuz*firebase-admin*

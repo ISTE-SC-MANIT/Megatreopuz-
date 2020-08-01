@@ -1,16 +1,14 @@
 package auth
 
 import (
-	"context"
-
+	"firebase.google.com/go/v4/auth"
 	"github.com/go-redis/redis/v8"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// Server : gRPC server for Auth service
+// Server is struct for the auth grpc server
 type Server struct {
-	MongoClient  *mongo.Client
-	RedisClient  *redis.Client
-	RedisContext context.Context
-	MongoContext context.Context
+	FirebaseApp FirebaseInteraction
+	MongoClient MongoDBInteraction
+	AuthClient  *auth.Client
+	RedisClient *redis.Client
 }

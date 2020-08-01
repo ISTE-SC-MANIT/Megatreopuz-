@@ -7,7 +7,6 @@ import (
 	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
-	timestamp "github.com/golang/protobuf/ptypes/timestamp"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -25,311 +24,223 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type LoginRequest struct {
-	Username             string   `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
+type CreateLocalPlayerRequest struct {
+	Email                string   `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
 	Password             string   `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	Username             string   `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
+	Name                 string   `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+	Phone                string   `protobuf:"bytes,5,opt,name=phone,proto3" json:"phone,omitempty"`
+	College              string   `protobuf:"bytes,6,opt,name=college,proto3" json:"college,omitempty"`
+	Country              string   `protobuf:"bytes,7,opt,name=country,proto3" json:"country,omitempty"`
+	Year                 uint32   `protobuf:"varint,8,opt,name=year,proto3" json:"year,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *LoginRequest) Reset()         { *m = LoginRequest{} }
-func (m *LoginRequest) String() string { return proto.CompactTextString(m) }
-func (*LoginRequest) ProtoMessage()    {}
-func (*LoginRequest) Descriptor() ([]byte, []int) {
+func (m *CreateLocalPlayerRequest) Reset()         { *m = CreateLocalPlayerRequest{} }
+func (m *CreateLocalPlayerRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateLocalPlayerRequest) ProtoMessage()    {}
+func (*CreateLocalPlayerRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8bbd6f3875b0e874, []int{0}
 }
 
-func (m *LoginRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_LoginRequest.Unmarshal(m, b)
+func (m *CreateLocalPlayerRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreateLocalPlayerRequest.Unmarshal(m, b)
 }
-func (m *LoginRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_LoginRequest.Marshal(b, m, deterministic)
+func (m *CreateLocalPlayerRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreateLocalPlayerRequest.Marshal(b, m, deterministic)
 }
-func (m *LoginRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LoginRequest.Merge(m, src)
+func (m *CreateLocalPlayerRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateLocalPlayerRequest.Merge(m, src)
 }
-func (m *LoginRequest) XXX_Size() int {
-	return xxx_messageInfo_LoginRequest.Size(m)
+func (m *CreateLocalPlayerRequest) XXX_Size() int {
+	return xxx_messageInfo_CreateLocalPlayerRequest.Size(m)
 }
-func (m *LoginRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_LoginRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_LoginRequest proto.InternalMessageInfo
-
-func (m *LoginRequest) GetUsername() string {
-	if m != nil {
-		return m.Username
-	}
-	return ""
+func (m *CreateLocalPlayerRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateLocalPlayerRequest.DiscardUnknown(m)
 }
 
-func (m *LoginRequest) GetPassword() string {
-	if m != nil {
-		return m.Password
-	}
-	return ""
-}
+var xxx_messageInfo_CreateLocalPlayerRequest proto.InternalMessageInfo
 
-type LoginResponse struct {
-	AccessToken          string               `protobuf:"bytes,1,opt,name=accessToken,proto3" json:"accessToken,omitempty"`
-	RefreshToken         string               `protobuf:"bytes,2,opt,name=refreshToken,proto3" json:"refreshToken,omitempty"`
-	AccessTokenExpiry    *timestamp.Timestamp `protobuf:"bytes,3,opt,name=accessTokenExpiry,proto3" json:"accessTokenExpiry,omitempty"`
-	RefreshTokenExpiry   *timestamp.Timestamp `protobuf:"bytes,4,opt,name=refreshTokenExpiry,proto3" json:"refreshTokenExpiry,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
-	XXX_unrecognized     []byte               `json:"-"`
-	XXX_sizecache        int32                `json:"-"`
-}
-
-func (m *LoginResponse) Reset()         { *m = LoginResponse{} }
-func (m *LoginResponse) String() string { return proto.CompactTextString(m) }
-func (*LoginResponse) ProtoMessage()    {}
-func (*LoginResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8bbd6f3875b0e874, []int{1}
-}
-
-func (m *LoginResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_LoginResponse.Unmarshal(m, b)
-}
-func (m *LoginResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_LoginResponse.Marshal(b, m, deterministic)
-}
-func (m *LoginResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LoginResponse.Merge(m, src)
-}
-func (m *LoginResponse) XXX_Size() int {
-	return xxx_messageInfo_LoginResponse.Size(m)
-}
-func (m *LoginResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_LoginResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_LoginResponse proto.InternalMessageInfo
-
-func (m *LoginResponse) GetAccessToken() string {
-	if m != nil {
-		return m.AccessToken
-	}
-	return ""
-}
-
-func (m *LoginResponse) GetRefreshToken() string {
-	if m != nil {
-		return m.RefreshToken
-	}
-	return ""
-}
-
-func (m *LoginResponse) GetAccessTokenExpiry() *timestamp.Timestamp {
-	if m != nil {
-		return m.AccessTokenExpiry
-	}
-	return nil
-}
-
-func (m *LoginResponse) GetRefreshTokenExpiry() *timestamp.Timestamp {
-	if m != nil {
-		return m.RefreshTokenExpiry
-	}
-	return nil
-}
-
-type Empty struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *Empty) Reset()         { *m = Empty{} }
-func (m *Empty) String() string { return proto.CompactTextString(m) }
-func (*Empty) ProtoMessage()    {}
-func (*Empty) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8bbd6f3875b0e874, []int{2}
-}
-
-func (m *Empty) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Empty.Unmarshal(m, b)
-}
-func (m *Empty) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Empty.Marshal(b, m, deterministic)
-}
-func (m *Empty) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Empty.Merge(m, src)
-}
-func (m *Empty) XXX_Size() int {
-	return xxx_messageInfo_Empty.Size(m)
-}
-func (m *Empty) XXX_DiscardUnknown() {
-	xxx_messageInfo_Empty.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Empty proto.InternalMessageInfo
-
-type Status struct {
-	IsUserLoggedIn       bool                 `protobuf:"varint,1,opt,name=isUserLoggedIn,proto3" json:"isUserLoggedIn,omitempty"`
-	AccessToken          string               `protobuf:"bytes,2,opt,name=accessToken,proto3" json:"accessToken,omitempty"`
-	RefreshToken         string               `protobuf:"bytes,3,opt,name=refreshToken,proto3" json:"refreshToken,omitempty"`
-	AccessTokenExpiry    *timestamp.Timestamp `protobuf:"bytes,4,opt,name=accessTokenExpiry,proto3" json:"accessTokenExpiry,omitempty"`
-	RefreshTokenExpiry   *timestamp.Timestamp `protobuf:"bytes,5,opt,name=refreshTokenExpiry,proto3" json:"refreshTokenExpiry,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
-	XXX_unrecognized     []byte               `json:"-"`
-	XXX_sizecache        int32                `json:"-"`
-}
-
-func (m *Status) Reset()         { *m = Status{} }
-func (m *Status) String() string { return proto.CompactTextString(m) }
-func (*Status) ProtoMessage()    {}
-func (*Status) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8bbd6f3875b0e874, []int{3}
-}
-
-func (m *Status) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Status.Unmarshal(m, b)
-}
-func (m *Status) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Status.Marshal(b, m, deterministic)
-}
-func (m *Status) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Status.Merge(m, src)
-}
-func (m *Status) XXX_Size() int {
-	return xxx_messageInfo_Status.Size(m)
-}
-func (m *Status) XXX_DiscardUnknown() {
-	xxx_messageInfo_Status.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Status proto.InternalMessageInfo
-
-func (m *Status) GetIsUserLoggedIn() bool {
-	if m != nil {
-		return m.IsUserLoggedIn
-	}
-	return false
-}
-
-func (m *Status) GetAccessToken() string {
-	if m != nil {
-		return m.AccessToken
-	}
-	return ""
-}
-
-func (m *Status) GetRefreshToken() string {
-	if m != nil {
-		return m.RefreshToken
-	}
-	return ""
-}
-
-func (m *Status) GetAccessTokenExpiry() *timestamp.Timestamp {
-	if m != nil {
-		return m.AccessTokenExpiry
-	}
-	return nil
-}
-
-func (m *Status) GetRefreshTokenExpiry() *timestamp.Timestamp {
-	if m != nil {
-		return m.RefreshTokenExpiry
-	}
-	return nil
-}
-
-type SendPasswordRecoveryEmailRequest struct {
-	Email                string   `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *SendPasswordRecoveryEmailRequest) Reset()         { *m = SendPasswordRecoveryEmailRequest{} }
-func (m *SendPasswordRecoveryEmailRequest) String() string { return proto.CompactTextString(m) }
-func (*SendPasswordRecoveryEmailRequest) ProtoMessage()    {}
-func (*SendPasswordRecoveryEmailRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8bbd6f3875b0e874, []int{4}
-}
-
-func (m *SendPasswordRecoveryEmailRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_SendPasswordRecoveryEmailRequest.Unmarshal(m, b)
-}
-func (m *SendPasswordRecoveryEmailRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_SendPasswordRecoveryEmailRequest.Marshal(b, m, deterministic)
-}
-func (m *SendPasswordRecoveryEmailRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SendPasswordRecoveryEmailRequest.Merge(m, src)
-}
-func (m *SendPasswordRecoveryEmailRequest) XXX_Size() int {
-	return xxx_messageInfo_SendPasswordRecoveryEmailRequest.Size(m)
-}
-func (m *SendPasswordRecoveryEmailRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_SendPasswordRecoveryEmailRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_SendPasswordRecoveryEmailRequest proto.InternalMessageInfo
-
-func (m *SendPasswordRecoveryEmailRequest) GetEmail() string {
+func (m *CreateLocalPlayerRequest) GetEmail() string {
 	if m != nil {
 		return m.Email
 	}
 	return ""
 }
 
-type UpdatePasswordRequest struct {
-	PasswordID           string   `protobuf:"bytes,1,opt,name=passwordID,proto3" json:"passwordID,omitempty"`
-	NewPassword          string   `protobuf:"bytes,2,opt,name=newPassword,proto3" json:"newPassword,omitempty"`
+func (m *CreateLocalPlayerRequest) GetPassword() string {
+	if m != nil {
+		return m.Password
+	}
+	return ""
+}
+
+func (m *CreateLocalPlayerRequest) GetUsername() string {
+	if m != nil {
+		return m.Username
+	}
+	return ""
+}
+
+func (m *CreateLocalPlayerRequest) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *CreateLocalPlayerRequest) GetPhone() string {
+	if m != nil {
+		return m.Phone
+	}
+	return ""
+}
+
+func (m *CreateLocalPlayerRequest) GetCollege() string {
+	if m != nil {
+		return m.College
+	}
+	return ""
+}
+
+func (m *CreateLocalPlayerRequest) GetCountry() string {
+	if m != nil {
+		return m.Country
+	}
+	return ""
+}
+
+func (m *CreateLocalPlayerRequest) GetYear() uint32 {
+	if m != nil {
+		return m.Year
+	}
+	return 0
+}
+
+type CheckUsernameAvailabilityRequest struct {
+	Username             string   `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *UpdatePasswordRequest) Reset()         { *m = UpdatePasswordRequest{} }
-func (m *UpdatePasswordRequest) String() string { return proto.CompactTextString(m) }
-func (*UpdatePasswordRequest) ProtoMessage()    {}
-func (*UpdatePasswordRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8bbd6f3875b0e874, []int{5}
+func (m *CheckUsernameAvailabilityRequest) Reset()         { *m = CheckUsernameAvailabilityRequest{} }
+func (m *CheckUsernameAvailabilityRequest) String() string { return proto.CompactTextString(m) }
+func (*CheckUsernameAvailabilityRequest) ProtoMessage()    {}
+func (*CheckUsernameAvailabilityRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8bbd6f3875b0e874, []int{1}
 }
 
-func (m *UpdatePasswordRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_UpdatePasswordRequest.Unmarshal(m, b)
+func (m *CheckUsernameAvailabilityRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CheckUsernameAvailabilityRequest.Unmarshal(m, b)
 }
-func (m *UpdatePasswordRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_UpdatePasswordRequest.Marshal(b, m, deterministic)
+func (m *CheckUsernameAvailabilityRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CheckUsernameAvailabilityRequest.Marshal(b, m, deterministic)
 }
-func (m *UpdatePasswordRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UpdatePasswordRequest.Merge(m, src)
+func (m *CheckUsernameAvailabilityRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CheckUsernameAvailabilityRequest.Merge(m, src)
 }
-func (m *UpdatePasswordRequest) XXX_Size() int {
-	return xxx_messageInfo_UpdatePasswordRequest.Size(m)
+func (m *CheckUsernameAvailabilityRequest) XXX_Size() int {
+	return xxx_messageInfo_CheckUsernameAvailabilityRequest.Size(m)
 }
-func (m *UpdatePasswordRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_UpdatePasswordRequest.DiscardUnknown(m)
+func (m *CheckUsernameAvailabilityRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CheckUsernameAvailabilityRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_UpdatePasswordRequest proto.InternalMessageInfo
+var xxx_messageInfo_CheckUsernameAvailabilityRequest proto.InternalMessageInfo
 
-func (m *UpdatePasswordRequest) GetPasswordID() string {
+func (m *CheckUsernameAvailabilityRequest) GetUsername() string {
 	if m != nil {
-		return m.PasswordID
+		return m.Username
 	}
 	return ""
 }
 
-func (m *UpdatePasswordRequest) GetNewPassword() string {
+type CheckUsernameAvailabilityResponse struct {
+	Available            bool     `protobuf:"varint,1,opt,name=available,proto3" json:"available,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CheckUsernameAvailabilityResponse) Reset()         { *m = CheckUsernameAvailabilityResponse{} }
+func (m *CheckUsernameAvailabilityResponse) String() string { return proto.CompactTextString(m) }
+func (*CheckUsernameAvailabilityResponse) ProtoMessage()    {}
+func (*CheckUsernameAvailabilityResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8bbd6f3875b0e874, []int{2}
+}
+
+func (m *CheckUsernameAvailabilityResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CheckUsernameAvailabilityResponse.Unmarshal(m, b)
+}
+func (m *CheckUsernameAvailabilityResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CheckUsernameAvailabilityResponse.Marshal(b, m, deterministic)
+}
+func (m *CheckUsernameAvailabilityResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CheckUsernameAvailabilityResponse.Merge(m, src)
+}
+func (m *CheckUsernameAvailabilityResponse) XXX_Size() int {
+	return xxx_messageInfo_CheckUsernameAvailabilityResponse.Size(m)
+}
+func (m *CheckUsernameAvailabilityResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CheckUsernameAvailabilityResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CheckUsernameAvailabilityResponse proto.InternalMessageInfo
+
+func (m *CheckUsernameAvailabilityResponse) GetAvailable() bool {
 	if m != nil {
-		return m.NewPassword
+		return m.Available
 	}
-	return ""
+	return false
+}
+
+type CheckStateResponse struct {
+	Initialised          bool     `protobuf:"varint,1,opt,name=initialised,proto3" json:"initialised,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CheckStateResponse) Reset()         { *m = CheckStateResponse{} }
+func (m *CheckStateResponse) String() string { return proto.CompactTextString(m) }
+func (*CheckStateResponse) ProtoMessage()    {}
+func (*CheckStateResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8bbd6f3875b0e874, []int{3}
+}
+
+func (m *CheckStateResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CheckStateResponse.Unmarshal(m, b)
+}
+func (m *CheckStateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CheckStateResponse.Marshal(b, m, deterministic)
+}
+func (m *CheckStateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CheckStateResponse.Merge(m, src)
+}
+func (m *CheckStateResponse) XXX_Size() int {
+	return xxx_messageInfo_CheckStateResponse.Size(m)
+}
+func (m *CheckStateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CheckStateResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CheckStateResponse proto.InternalMessageInfo
+
+func (m *CheckStateResponse) GetInitialised() bool {
+	if m != nil {
+		return m.Initialised
+	}
+	return false
 }
 
 func init() {
-	proto.RegisterType((*LoginRequest)(nil), "auth.LoginRequest")
-	proto.RegisterType((*LoginResponse)(nil), "auth.LoginResponse")
-	proto.RegisterType((*Empty)(nil), "auth.Empty")
-	proto.RegisterType((*Status)(nil), "auth.Status")
-	proto.RegisterType((*SendPasswordRecoveryEmailRequest)(nil), "auth.SendPasswordRecoveryEmailRequest")
-	proto.RegisterType((*UpdatePasswordRequest)(nil), "auth.UpdatePasswordRequest")
+	proto.RegisterType((*CreateLocalPlayerRequest)(nil), "auth.CreateLocalPlayerRequest")
+	proto.RegisterType((*CheckUsernameAvailabilityRequest)(nil), "auth.CheckUsernameAvailabilityRequest")
+	proto.RegisterType((*CheckUsernameAvailabilityResponse)(nil), "auth.CheckUsernameAvailabilityResponse")
+	proto.RegisterType((*CheckStateResponse)(nil), "auth.CheckStateResponse")
 }
 
 func init() {
@@ -337,37 +248,32 @@ func init() {
 }
 
 var fileDescriptor_8bbd6f3875b0e874 = []byte{
-	// 473 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x54, 0x4d, 0x6f, 0xd3, 0x40,
-	0x10, 0x55, 0xd2, 0x24, 0x94, 0x49, 0xa8, 0xc4, 0x02, 0x52, 0x30, 0x12, 0x44, 0x3e, 0x54, 0xe5,
-	0x10, 0x1b, 0xca, 0x05, 0x71, 0x2b, 0x10, 0x44, 0x50, 0x40, 0x91, 0x9d, 0x1e, 0xe0, 0xb6, 0x75,
-	0xa6, 0xce, 0x8a, 0xd8, 0xbb, 0xec, 0x47, 0x4a, 0xf8, 0x0d, 0xfc, 0x04, 0xfe, 0x21, 0x7f, 0x02,
-	0xd9, 0xbb, 0x06, 0xbb, 0x14, 0x05, 0x21, 0x4e, 0xf6, 0xbc, 0x99, 0xf7, 0xac, 0x79, 0xfb, 0xbc,
-	0x00, 0xd4, 0xe8, 0x55, 0x20, 0x24, 0xd7, 0x9c, 0x74, 0x8a, 0x77, 0xef, 0x41, 0xca, 0x79, 0xba,
-	0xc6, 0xb0, 0xc4, 0xce, 0xcc, 0x79, 0xa8, 0x59, 0x86, 0x4a, 0xd3, 0x4c, 0xd8, 0x31, 0xff, 0x15,
-	0x0c, 0x66, 0x3c, 0x65, 0x79, 0x84, 0x9f, 0x0c, 0x2a, 0x4d, 0x3c, 0xd8, 0x37, 0x0a, 0x65, 0x4e,
-	0x33, 0x1c, 0xb6, 0x46, 0xad, 0xa3, 0xeb, 0xd1, 0xcf, 0xba, 0xe8, 0x09, 0xaa, 0xd4, 0x05, 0x97,
-	0xcb, 0x61, 0xdb, 0xf6, 0xaa, 0xda, 0xff, 0xde, 0x82, 0x1b, 0x4e, 0x48, 0x09, 0x9e, 0x2b, 0x24,
-	0x23, 0xe8, 0xd3, 0x24, 0x41, 0xa5, 0x16, 0xfc, 0x23, 0xe6, 0x4e, 0xac, 0x0e, 0x11, 0x1f, 0x06,
-	0x12, 0xcf, 0x25, 0xaa, 0x95, 0x1d, 0xb1, 0x9a, 0x0d, 0x8c, 0xbc, 0x86, 0x9b, 0x35, 0xca, 0xe4,
-	0xb3, 0x60, 0x72, 0x3b, 0xdc, 0x1b, 0xb5, 0x8e, 0xfa, 0xc7, 0x5e, 0x60, 0x97, 0x0b, 0xaa, 0xe5,
-	0x82, 0x45, 0xb5, 0x5c, 0xf4, 0x3b, 0x89, 0xbc, 0x01, 0x52, 0x57, 0x76, 0x52, 0x9d, 0x9d, 0x52,
-	0x57, 0xb0, 0xfc, 0x6b, 0xd0, 0x9d, 0x64, 0x42, 0x6f, 0xfd, 0xaf, 0x6d, 0xe8, 0xc5, 0x9a, 0x6a,
-	0xa3, 0xc8, 0x21, 0x1c, 0x30, 0x75, 0xaa, 0x50, 0xce, 0x78, 0x9a, 0xe2, 0x72, 0x6a, 0x57, 0xde,
-	0x8f, 0x2e, 0xa1, 0x97, 0x7d, 0x69, 0xef, 0xf6, 0x65, 0xef, 0x6f, 0x7d, 0xe9, 0xfc, 0x3f, 0x5f,
-	0xba, 0xff, 0xe4, 0xcb, 0x53, 0x18, 0xc5, 0x98, 0x2f, 0xe7, 0x2e, 0x15, 0x11, 0x26, 0x7c, 0x83,
-	0x72, 0x3b, 0xc9, 0x28, 0x5b, 0x57, 0x09, 0xbb, 0x0d, 0x5d, 0x2c, 0x6a, 0x97, 0x08, 0x5b, 0xf8,
-	0xef, 0xe1, 0xce, 0xa9, 0x58, 0x52, 0x8d, 0xbf, 0xb8, 0x76, 0xfc, 0x3e, 0x40, 0x15, 0xb2, 0xe9,
-	0x4b, 0xc7, 0xa9, 0x21, 0x85, 0x9d, 0x39, 0x5e, 0xcc, 0x9b, 0xb9, 0xac, 0x43, 0xc7, 0xdf, 0xda,
-	0xd0, 0x3f, 0x31, 0x7a, 0x15, 0xa3, 0xdc, 0xb0, 0x04, 0xc9, 0x23, 0xe8, 0x96, 0x49, 0x25, 0x24,
-	0x28, 0xff, 0x97, 0x7a, 0xfe, 0xbd, 0x5b, 0x0d, 0xcc, 0x45, 0xd9, 0x87, 0xde, 0x8c, 0xa7, 0xdc,
-	0x68, 0xd2, 0xb7, 0xed, 0xf2, 0xf0, 0xbd, 0x7a, 0x41, 0x1e, 0xc2, 0x60, 0x43, 0xd7, 0xac, 0x58,
-	0xa1, 0x38, 0xee, 0xe6, 0xe4, 0xc0, 0x16, 0x2e, 0x29, 0x73, 0xb8, 0xfb, 0x47, 0x97, 0xc8, 0xa1,
-	0x1b, 0xdd, 0x61, 0x63, 0xf3, 0xe3, 0xcf, 0xe0, 0xa0, 0xe9, 0x1e, 0xb9, 0x67, 0xdb, 0x57, 0x7a,
-	0xda, 0xe0, 0x3e, 0x7f, 0xfc, 0x21, 0x4c, 0x99, 0x5e, 0x99, 0xb3, 0x20, 0xe1, 0x59, 0x38, 0x8d,
-	0x17, 0x93, 0x71, 0xfc, 0x62, 0xfc, 0xf6, 0xe4, 0xdd, 0x74, 0x11, 0x66, 0x98, 0x52, 0x2d, 0x91,
-	0x0b, 0xf3, 0x65, 0x5c, 0x50, 0xdc, 0x3d, 0xd2, 0x2b, 0x1f, 0x4f, 0x7e, 0x04, 0x00, 0x00, 0xff,
-	0xff, 0x6b, 0x94, 0x39, 0x41, 0x70, 0x04, 0x00, 0x00,
+	// 388 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x52, 0xcf, 0x8b, 0xd3, 0x40,
+	0x14, 0x26, 0xda, 0xdd, 0xed, 0xbe, 0xa0, 0xe0, 0xe0, 0x61, 0x0c, 0x22, 0x31, 0x07, 0xdd, 0x4b,
+	0x1b, 0x54, 0xd0, 0x9b, 0x18, 0xcb, 0x1e, 0x16, 0x54, 0x24, 0x59, 0x2f, 0xde, 0xa6, 0xe9, 0xa3,
+	0x19, 0x9c, 0x64, 0xe2, 0xfc, 0xa8, 0xc4, 0x3f, 0xd5, 0x3f, 0xc4, 0xb3, 0x64, 0x26, 0xa9, 0xa9,
+	0x50, 0x7b, 0xca, 0xfb, 0xbe, 0x2f, 0xef, 0x7b, 0xbf, 0x06, 0x80, 0x59, 0x53, 0x2d, 0x5b, 0x25,
+	0x8d, 0x24, 0xb3, 0x3e, 0x8e, 0x42, 0x6b, 0xb8, 0xd0, 0x9e, 0x4a, 0x7e, 0x05, 0x40, 0x57, 0x0a,
+	0x99, 0xc1, 0x0f, 0xb2, 0x64, 0xe2, 0xb3, 0x60, 0x1d, 0xaa, 0x1c, 0xbf, 0x5b, 0xd4, 0x86, 0x3c,
+	0x84, 0x33, 0xac, 0x19, 0x17, 0x34, 0x88, 0x83, 0xab, 0xcb, 0xdc, 0x03, 0x12, 0xc1, 0xbc, 0x65,
+	0x5a, 0xff, 0x90, 0x6a, 0x43, 0xef, 0x38, 0x61, 0x8f, 0x7b, 0xcd, 0x6a, 0x54, 0x0d, 0xab, 0x91,
+	0xde, 0xf5, 0xda, 0x88, 0x09, 0x81, 0x99, 0xe3, 0x67, 0x8e, 0x77, 0x71, 0x5f, 0xa1, 0xad, 0x64,
+	0x83, 0xf4, 0xcc, 0x57, 0x70, 0x80, 0x50, 0xb8, 0x28, 0xa5, 0x10, 0xb8, 0x45, 0x7a, 0xee, 0xf8,
+	0x11, 0x7a, 0xc5, 0x36, 0x46, 0x75, 0xf4, 0x62, 0x54, 0x1c, 0xec, 0xdd, 0x3b, 0x64, 0x8a, 0xce,
+	0xe3, 0xe0, 0xea, 0x5e, 0xee, 0xe2, 0xe4, 0x2d, 0xc4, 0xab, 0x0a, 0xcb, 0x6f, 0x5f, 0x86, 0x16,
+	0xb2, 0x1d, 0xe3, 0x82, 0xad, 0xb9, 0xe0, 0xa6, 0x1b, 0x67, 0x9c, 0x76, 0x1c, 0x1c, 0x76, 0x9c,
+	0x64, 0xf0, 0xf4, 0x3f, 0xf9, 0xba, 0x95, 0x8d, 0x46, 0xf2, 0x18, 0x2e, 0x99, 0xe7, 0x85, 0x77,
+	0x98, 0xe7, 0x7f, 0x89, 0xe4, 0x35, 0x10, 0x67, 0x51, 0x18, 0x66, 0x70, 0x9f, 0x13, 0x43, 0xc8,
+	0x1b, 0x6e, 0x38, 0x13, 0x5c, 0xe3, 0x66, 0xc8, 0x9a, 0x52, 0x2f, 0x7f, 0x07, 0x10, 0x66, 0xd6,
+	0x54, 0x05, 0xaa, 0x1d, 0x2f, 0x91, 0xbc, 0x83, 0x07, 0xe5, 0xbf, 0x67, 0x22, 0x4f, 0x96, 0xee,
+	0xb8, 0xc7, 0xee, 0x17, 0x85, 0x5e, 0xbf, 0xae, 0x5b, 0xd3, 0x11, 0x01, 0x8f, 0xca, 0x63, 0xc3,
+	0x90, 0x67, 0x83, 0xd3, 0x89, 0x6d, 0x45, 0xcf, 0x4f, 0xfe, 0x37, 0x4c, 0xf8, 0x06, 0xee, 0xef,
+	0xab, 0xb9, 0xd9, 0xc9, 0xb4, 0x99, 0x88, 0x4e, 0x7c, 0x0e, 0x56, 0xf3, 0xfe, 0xc5, 0xd7, 0x74,
+	0xcb, 0x4d, 0x65, 0xd7, 0xcb, 0x52, 0xd6, 0xe9, 0x4d, 0x71, 0x7b, 0xbd, 0x28, 0x56, 0x8b, 0x8f,
+	0xd9, 0xa7, 0x9b, 0xdb, 0xb4, 0xc6, 0x2d, 0x33, 0x0a, 0x65, 0x6b, 0x7f, 0x2e, 0xfa, 0xfc, 0xd4,
+	0xbd, 0xe1, 0xf5, 0xb9, 0xfb, 0xbc, 0xfa, 0x13, 0x00, 0x00, 0xff, 0xff, 0x8c, 0x67, 0x28, 0x78,
+	0xeb, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -382,11 +288,9 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type AuthServiceClient interface {
-	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
-	Logout(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
-	ValidateUser(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Status, error)
-	SendPasswordRecoveryEmail(ctx context.Context, in *SendPasswordRecoveryEmailRequest, opts ...grpc.CallOption) (*Empty, error)
-	UpdatePassword(ctx context.Context, in *UpdatePasswordRequest, opts ...grpc.CallOption) (*Empty, error)
+	CreateLocalPlayer(ctx context.Context, in *CreateLocalPlayerRequest, opts ...grpc.CallOption) (*Empty, error)
+	CheckUsernameAvailability(ctx context.Context, in *CheckUsernameAvailabilityRequest, opts ...grpc.CallOption) (*CheckUsernameAvailabilityResponse, error)
+	CheckUserState(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CheckStateResponse, error)
 }
 
 type authServiceClient struct {
@@ -397,45 +301,27 @@ func NewAuthServiceClient(cc grpc.ClientConnInterface) AuthServiceClient {
 	return &authServiceClient{cc}
 }
 
-func (c *authServiceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
-	out := new(LoginResponse)
-	err := c.cc.Invoke(ctx, "/auth.AuthService/Login", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *authServiceClient) Logout(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error) {
+func (c *authServiceClient) CreateLocalPlayer(ctx context.Context, in *CreateLocalPlayerRequest, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/auth.AuthService/Logout", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/auth.AuthService/createLocalPlayer", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *authServiceClient) ValidateUser(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Status, error) {
-	out := new(Status)
-	err := c.cc.Invoke(ctx, "/auth.AuthService/validateUser", in, out, opts...)
+func (c *authServiceClient) CheckUsernameAvailability(ctx context.Context, in *CheckUsernameAvailabilityRequest, opts ...grpc.CallOption) (*CheckUsernameAvailabilityResponse, error) {
+	out := new(CheckUsernameAvailabilityResponse)
+	err := c.cc.Invoke(ctx, "/auth.AuthService/checkUsernameAvailability", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *authServiceClient) SendPasswordRecoveryEmail(ctx context.Context, in *SendPasswordRecoveryEmailRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/auth.AuthService/SendPasswordRecoveryEmail", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *authServiceClient) UpdatePassword(ctx context.Context, in *UpdatePasswordRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/auth.AuthService/UpdatePassword", in, out, opts...)
+func (c *authServiceClient) CheckUserState(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CheckStateResponse, error) {
+	out := new(CheckStateResponse)
+	err := c.cc.Invoke(ctx, "/auth.AuthService/checkUserState", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -444,123 +330,79 @@ func (c *authServiceClient) UpdatePassword(ctx context.Context, in *UpdatePasswo
 
 // AuthServiceServer is the server API for AuthService service.
 type AuthServiceServer interface {
-	Login(context.Context, *LoginRequest) (*LoginResponse, error)
-	Logout(context.Context, *Empty) (*Empty, error)
-	ValidateUser(context.Context, *Empty) (*Status, error)
-	SendPasswordRecoveryEmail(context.Context, *SendPasswordRecoveryEmailRequest) (*Empty, error)
-	UpdatePassword(context.Context, *UpdatePasswordRequest) (*Empty, error)
+	CreateLocalPlayer(context.Context, *CreateLocalPlayerRequest) (*Empty, error)
+	CheckUsernameAvailability(context.Context, *CheckUsernameAvailabilityRequest) (*CheckUsernameAvailabilityResponse, error)
+	CheckUserState(context.Context, *Empty) (*CheckStateResponse, error)
 }
 
 // UnimplementedAuthServiceServer can be embedded to have forward compatible implementations.
 type UnimplementedAuthServiceServer struct {
 }
 
-func (*UnimplementedAuthServiceServer) Login(ctx context.Context, req *LoginRequest) (*LoginResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+func (*UnimplementedAuthServiceServer) CreateLocalPlayer(ctx context.Context, req *CreateLocalPlayerRequest) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateLocalPlayer not implemented")
 }
-func (*UnimplementedAuthServiceServer) Logout(ctx context.Context, req *Empty) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
+func (*UnimplementedAuthServiceServer) CheckUsernameAvailability(ctx context.Context, req *CheckUsernameAvailabilityRequest) (*CheckUsernameAvailabilityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckUsernameAvailability not implemented")
 }
-func (*UnimplementedAuthServiceServer) ValidateUser(ctx context.Context, req *Empty) (*Status, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ValidateUser not implemented")
-}
-func (*UnimplementedAuthServiceServer) SendPasswordRecoveryEmail(ctx context.Context, req *SendPasswordRecoveryEmailRequest) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendPasswordRecoveryEmail not implemented")
-}
-func (*UnimplementedAuthServiceServer) UpdatePassword(ctx context.Context, req *UpdatePasswordRequest) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdatePassword not implemented")
+func (*UnimplementedAuthServiceServer) CheckUserState(ctx context.Context, req *Empty) (*CheckStateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckUserState not implemented")
 }
 
 func RegisterAuthServiceServer(s *grpc.Server, srv AuthServiceServer) {
 	s.RegisterService(&_AuthService_serviceDesc, srv)
 }
 
-func _AuthService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LoginRequest)
+func _AuthService_CreateLocalPlayer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateLocalPlayerRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).Login(ctx, in)
+		return srv.(AuthServiceServer).CreateLocalPlayer(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/auth.AuthService/Login",
+		FullMethod: "/auth.AuthService/CreateLocalPlayer",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).Login(ctx, req.(*LoginRequest))
+		return srv.(AuthServiceServer).CreateLocalPlayer(ctx, req.(*CreateLocalPlayerRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthService_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AuthService_CheckUsernameAvailability_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckUsernameAvailabilityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).CheckUsernameAvailability(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/auth.AuthService/CheckUsernameAvailability",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).CheckUsernameAvailability(ctx, req.(*CheckUsernameAvailabilityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_CheckUserState_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).Logout(ctx, in)
+		return srv.(AuthServiceServer).CheckUserState(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/auth.AuthService/Logout",
+		FullMethod: "/auth.AuthService/CheckUserState",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).Logout(ctx, req.(*Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _AuthService_ValidateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthServiceServer).ValidateUser(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/auth.AuthService/ValidateUser",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).ValidateUser(ctx, req.(*Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _AuthService_SendPasswordRecoveryEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SendPasswordRecoveryEmailRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthServiceServer).SendPasswordRecoveryEmail(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/auth.AuthService/SendPasswordRecoveryEmail",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).SendPasswordRecoveryEmail(ctx, req.(*SendPasswordRecoveryEmailRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _AuthService_UpdatePassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdatePasswordRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthServiceServer).UpdatePassword(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/auth.AuthService/UpdatePassword",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).UpdatePassword(ctx, req.(*UpdatePasswordRequest))
+		return srv.(AuthServiceServer).CheckUserState(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -570,24 +412,16 @@ var _AuthService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*AuthServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Login",
-			Handler:    _AuthService_Login_Handler,
+			MethodName: "createLocalPlayer",
+			Handler:    _AuthService_CreateLocalPlayer_Handler,
 		},
 		{
-			MethodName: "Logout",
-			Handler:    _AuthService_Logout_Handler,
+			MethodName: "checkUsernameAvailability",
+			Handler:    _AuthService_CheckUsernameAvailability_Handler,
 		},
 		{
-			MethodName: "validateUser",
-			Handler:    _AuthService_ValidateUser_Handler,
-		},
-		{
-			MethodName: "SendPasswordRecoveryEmail",
-			Handler:    _AuthService_SendPasswordRecoveryEmail_Handler,
-		},
-		{
-			MethodName: "UpdatePassword",
-			Handler:    _AuthService_UpdatePassword_Handler,
+			MethodName: "checkUserState",
+			Handler:    _AuthService_CheckUserState_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

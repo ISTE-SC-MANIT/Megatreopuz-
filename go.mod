@@ -3,15 +3,21 @@ module github.com/ISTE-SC-MANIT/megatreopuz-auth
 go 1.14
 
 require (
-	github.com/ISTE-SC-MANIT/megatreopuz-mongo-structs v0.0.0-20200612105712-b0bd504b6cb3
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/go-redis/redis/v8 v8.0.0-beta.5
+	cloud.google.com/go/firestore v1.2.0 // indirect
+	firebase.google.com/go/v4 v4.0.0
+	github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20200729233021-c5cc6795e17d
+	github.com/bxcodec/faker/v3 v3.5.0
 	github.com/golang/protobuf v1.4.2
 	github.com/joho/godotenv v1.3.0
-	github.com/myesui/uuid v1.0.0 // indirect
-	github.com/twinj/uuid v1.0.0
-	go.mongodb.org/mongo-driver v1.3.4
-	golang.org/x/crypto v0.0.0-20200604202706-70a84ac30bf9
-	google.golang.org/grpc v1.29.1
-	gopkg.in/stretchr/testify.v1 v1.2.2 // indirect
+	github.com/onsi/ginkgo v1.14.0
+	github.com/onsi/gomega v1.10.1
+	go.mongodb.org/mongo-driver v1.3.5
+	go.opencensus.io v0.22.4 // indirect
+	golang.org/x/net v0.0.0-20200707034311-ab3426394381 // indirect
+	golang.org/x/sys v0.0.0-20200625212154-ddb9806d33ae // indirect
+	google.golang.org/api v0.29.0 // indirect
+	google.golang.org/genproto v0.0.0-20200715011427-11fb19a81f2c // indirect
+	google.golang.org/grpc v1.30.0
+	google.golang.org/protobuf v1.25.0 // indirect
+	github.com/go-redis/redis/v8 v8.0.0-beta.7
 )
