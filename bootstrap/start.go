@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/ISTE-SC-MANIT/megatreopuz-auth/auth"
-	"github.com/ISTE-SC-MANIT/megatreopuz-auth/proto"
+	proto "github.com/ISTE-SC-MANIT/megatreopuz-auth/protos"
 	"github.com/go-redis/redis/v8"
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
@@ -69,7 +69,7 @@ func Start() {
 		FirebaseApp: &auth.FirebaseAppWrapper{
 			App: app,
 		},
-		AuthClient: client,
+		AuthClient:  client,
 		RedisClient: redisClient,
 		MongoClient: &auth.MongoDBClientWrapper{
 			Client: mongo,

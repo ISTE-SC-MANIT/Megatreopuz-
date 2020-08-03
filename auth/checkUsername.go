@@ -3,7 +3,7 @@ package auth
 import (
 	"context"
 
-	pb "github.com/ISTE-SC-MANIT/megatreopuz-auth/proto"
+	pb "github.com/ISTE-SC-MANIT/megatreopuz-auth/protos"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
