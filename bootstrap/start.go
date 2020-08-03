@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/ISTE-SC-MANIT/megatreopuz-auth/auth"
-	proto "github.com/ISTE-SC-MANIT/megatreopuz-auth/protos"
+	"github.com/ISTE-SC-MANIT/megatreopuz-auth/protos"
 	"github.com/go-redis/redis/v8"
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
@@ -65,7 +65,7 @@ func Start() {
 
 	// Make a gRPC server
 	grpcServer := grpc.NewServer()
-	proto.RegisterAuthServiceServer(grpcServer, &auth.Server{
+	protos.RegisterAuthServiceServer(grpcServer, &auth.Server{
 		FirebaseApp: &auth.FirebaseAppWrapper{
 			App: app,
 		},
