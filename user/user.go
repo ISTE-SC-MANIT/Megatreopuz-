@@ -10,7 +10,7 @@ type QuestionsAnswered struct {
 
 // User : The struct to map to user collection
 type User struct {
-	ID                primitive.ObjectID  `bson:"_id,omitempty"`
+	ID                string  `bson:"_id,omitempty"`
 	Username          string              `bson:"username"`
 	Name              string              `bson:"name"`
 	Phone             string              `bson:"phone"`
