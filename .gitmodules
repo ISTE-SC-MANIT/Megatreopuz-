@@ -1,0 +1,3 @@
+[submodule "megatreopuz-protos"]
+	path = megatreopuz-protos
+	url = git@github.com:ISTE-SC-MANIT/megatreopuz-protos.git
