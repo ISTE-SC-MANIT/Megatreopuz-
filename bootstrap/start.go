@@ -8,7 +8,6 @@ import (
 
 	"github.com/ISTE-SC-MANIT/megatreopuz-auth/auth"
 	"github.com/ISTE-SC-MANIT/megatreopuz-auth/protos"
-	"github.com/go-redis/redis/v8"
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 )
@@ -43,18 +42,18 @@ func Start() {
 	log.Print(`Pinged MongoDB successfully`)
 
 	// Connect to redis
-	redisClient := redis.NewClient(&redis.Options{
-		Addr:     os.Getenv("REDIS_ADDRESS"),
-		Password: os.Getenv("REDIS_PASSWORD"),
-	})
+	// redisClient := redis.NewClient(&redis.Options{
+	// 	Addr:     os.Getenv("REDIS_ADDRESS"),
+	// 	Password: os.Getenv("REDIS_PASSWORD"),
+	// })
 
-	log.Print(`Connecting to Redis`)
-	// Test the redis connection
-	_, err = redisClient.Ping(context.Background()).Result()
-	if err != nil {
-		log.Fatalf("Ran into an error while connecting to Redis: %v", err.Error())
-	}
-	log.Print(`Pinged Redis successfully`)
+	// log.Print(`Connecting to Redis`)
+	// // Test the redis connection
+	// _, err = redisClient.Ping(context.Background()).Result()
+	// if err != nil {
+	// 	log.Fatalf("Ran into an error while connecting to Redis: %v", err.Error())
+	// }
+	// log.Print(`Pinged Redis successfully`)
 
 	// Start a tcp listener on given port
 	port := os.Getenv("PORT")
@@ -69,8 +68,8 @@ func Start() {
 		FirebaseApp: &auth.FirebaseAppWrapper{
 			App: app,
 		},
-		AuthClient:  client,
-		RedisClient: redisClient,
+		AuthClient: client,
+		// RedisClient: redisClient,
 		MongoClient: &auth.MongoDBClientWrapper{
 			Client: mongo,
 		},
