@@ -31,6 +31,9 @@ func Start() {
 		log.Fatalf("error connecting to firebase auth: %v", err)
 	}
 	mongo, err := ConnectToMongoDB()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	log.Print(`Pinging MongoDB`)
 
