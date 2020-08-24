@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+
 	"os"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -13,7 +14,7 @@ import (
 	pb "github.com/ISTE-SC-MANIT/megatreopuz-user/protos"
 )
 
-//UpdateLocalPlayer is the rpc to create a local player's entry
+//UpdateLocalPlayer is the rpc to update a local player's entry
 func (s *Server) UpdateLocalPlayer(ctx context.Context, req *pb.UpdateLocalPlayerRequest) (*pb.Empty, error) {
 	decoded, err := utils.GetUserFromFirebase(ctx, s.AuthClient)
 	if err != nil {
@@ -24,6 +25,9 @@ func (s *Server) UpdateLocalPlayer(ctx context.Context, req *pb.UpdateLocalPlaye
 	if len(req.GetCollege()) > 0 {
 		setUpdateFields = append(setUpdateFields, bson.E{Key: "college", Value: req.GetCollege()})
 	}
+	if len(req.GetUsername()) > 0 {
+		setUpdateFields = append(setUpdateFields, bson.E{Key: "username", Value: req.GetUsername()})
+	}
 	if len(req.GetName()) > 0 {
 		setUpdateFields = append(setUpdateFields, bson.E{Key: "name", Value: req.GetName()})
 	}
@@ -33,6 +37,7 @@ func (s *Server) UpdateLocalPlayer(ctx context.Context, req *pb.UpdateLocalPlaye
 	if len(req.GetCountry()) > 0 {
 		setUpdateFields = append(setUpdateFields, bson.E{Key: "country", Value: req.GetCountry()})
 	}
+
 	if int(req.GetYear()) > 0 {
 		setUpdateFields = append(setUpdateFields, bson.E{Key: "year", Value: int(req.GetYear())})
 	}
