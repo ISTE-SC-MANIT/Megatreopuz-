@@ -1,6 +1,6 @@
 package question
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
+
 
 // Question : The struct to map to question collection
 type User struct {
