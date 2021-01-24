@@ -4,6 +4,6 @@ package question
 type Question struct {
 	ID         string `bson:"_id,omitempty"`
 	Answer     string `bson:"answer"`
-	QuestionNo string `bson:"questionNo"`
+	QuestionNo int    `bson:"questionNo"`
 	ImageUrl   string `bson:"imgUrl"`
 }
