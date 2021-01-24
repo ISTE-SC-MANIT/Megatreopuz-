@@ -20,6 +20,7 @@ func (s *Server) CreateLocalPlayer(ctx context.Context, req *pb.CreateLocalPlaye
 	decoded, err := utils.GetUserFromFirebase(ctx, s.AuthClient)
 
 	if err != nil {
+		fmt.Println(err)
 		return nil, status.Errorf(codes.Unauthenticated, "Could not identify the user")
 	}
 

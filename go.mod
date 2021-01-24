@@ -6,7 +6,8 @@ require (
 	firebase.google.com/go v3.13.0+incompatible // indirect
 	firebase.google.com/go/v4 v4.0.0
 	github.com/ISTE-SC-MANIT/megatreopuz-auth v0.0.0-20200801223236-55a0bc0a9920
-	github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20200803193601-fd3d8ab1b9a2
+	github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217183630-392f9fced832
+
 	github.com/go-redis/redis/v8 v8.0.0-beta.7
 	github.com/golang/protobuf v1.4.2
 	github.com/joho/godotenv v1.3.0

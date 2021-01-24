@@ -40,6 +40,7 @@ github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym
 github.com/DataDog/sketches-go v0.0.0-20190923095040-43f19ad77ff7/go.mod h1:Q5DbzQ+3AkgGwymQO7aZFNP7ns2lZKGtvRBzRXfdi60=
 github.com/ISTE-SC-MANIT/megatreopuz-auth v0.0.0-20200801223236-55a0bc0a9920 h1:/y0NapJJSeBEbLxtT+s8ZZumFOnyqrwXZzQUMJ/IsXA=
 github.com/ISTE-SC-MANIT/megatreopuz-auth v0.0.0-20200801223236-55a0bc0a9920/go.mod h1:SBBBmYe6sPGvhHaLehVVEtwMuAVRT4TmEm5JX9unm8A=
+github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20200729233021-c5cc6795e17d h1:KtBu/RUiClfe3uKv8mkmVx0H6C6oD0X6QirED4/4OyY=
 github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20200729233021-c5cc6795e17d/go.mod h1:Qskxde6pi3ga0hobxNkRHOSxJ6RBc0Dw+Tp2dIW0Sng=
 github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20200803170954-b7a1aa167f6d h1:ho6xYJIMqLimqIBDMDQkvMBX122Oby+Q5H6zOceZLUk=
 github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20200803170954-b7a1aa167f6d/go.mod h1:zAkvgD+tQokMALV+I3bnq9/z1CUusJMxKhKcNuuaaRs=
@@ -47,6 +48,14 @@ github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20200803171602-8550d9c1a646 h
 github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20200803171602-8550d9c1a646/go.mod h1:ubLWegP6mcN2PJ9EnivqMivVOanndHyRwNJ9iZ2UlAI=
 github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20200803193601-fd3d8ab1b9a2 h1:ys7sOhgh6gVE6/zWV8dA/KE83abONiWSIK/Fj/NLN3w=
 github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20200803193601-fd3d8ab1b9a2/go.mod h1:ubLWegP6mcN2PJ9EnivqMivVOanndHyRwNJ9iZ2UlAI=
+github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217174515-1152d3e9798e h1:d3liGPhfZgHD6nVz6LK4lO9GHwj6U7ZjnpaPis7GkV0=
+github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217174515-1152d3e9798e/go.mod h1:ubLWegP6mcN2PJ9EnivqMivVOanndHyRwNJ9iZ2UlAI=
+github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217175211-de22897a5f9c h1:RBF9+EeKjt7I/IIMlKxmau41p2wcPMN4wl058GXhFMM=
+github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217175211-de22897a5f9c/go.mod h1:ubLWegP6mcN2PJ9EnivqMivVOanndHyRwNJ9iZ2UlAI=
+github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217181635-ae578e71cc71 h1:wM5iIkty3rk/UZUHbNPXrE5LQyJsL83N8WWRvL19dMk=
+github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217181635-ae578e71cc71/go.mod h1:ubLWegP6mcN2PJ9EnivqMivVOanndHyRwNJ9iZ2UlAI=
+github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217183630-392f9fced832 h1:b8dxBg5casVuPb5UshnHp5G0iVemXVnT1YYiUsRdWwA=
+github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217183630-392f9fced832/go.mod h1:ubLWegP6mcN2PJ9EnivqMivVOanndHyRwNJ9iZ2UlAI=
 github.com/aws/aws-sdk-go v1.29.15 h1:0ms/213murpsujhsnxnNKNeVouW60aJqSd992Ks3mxs=
 github.com/aws/aws-sdk-go v1.29.15/go.mod h1:1KvfttTE3SPKMpo8g2c6jL3ZKfXtFvKscTgahTma5Xg=
 github.com/benbjohnson/clock v1.0.3/go.mod h1:bGMdMPoPVvcYyt1gHDf4J2KE153Yf9BuiUKYMaxlTDM=
