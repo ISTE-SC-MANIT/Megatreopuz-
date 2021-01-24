@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/firestore v1.2.0 // indirect
 	firebase.google.com/go v3.13.0+incompatible // indirect
 	firebase.google.com/go/v4 v4.0.0
-	github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20200803193601-fd3d8ab1b9a2
+	github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217175211-de22897a5f9c
 	github.com/bxcodec/faker/v3 v3.5.0
 	github.com/go-redis/redis/v8 v8.0.0-beta.7
 	github.com/golang/protobuf v1.4.2

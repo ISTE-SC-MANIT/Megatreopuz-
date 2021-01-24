@@ -56,6 +56,8 @@ github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20200803171602-8550d9c1a646 h
 github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20200803171602-8550d9c1a646/go.mod h1:ubLWegP6mcN2PJ9EnivqMivVOanndHyRwNJ9iZ2UlAI=
 github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20200803193601-fd3d8ab1b9a2 h1:ys7sOhgh6gVE6/zWV8dA/KE83abONiWSIK/Fj/NLN3w=
 github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20200803193601-fd3d8ab1b9a2/go.mod h1:ubLWegP6mcN2PJ9EnivqMivVOanndHyRwNJ9iZ2UlAI=
+github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217175211-de22897a5f9c h1:RBF9+EeKjt7I/IIMlKxmau41p2wcPMN4wl058GXhFMM=
+github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217175211-de22897a5f9c/go.mod h1:ubLWegP6mcN2PJ9EnivqMivVOanndHyRwNJ9iZ2UlAI=
 github.com/benbjohnson/clock v1.0.3/go.mod h1:bGMdMPoPVvcYyt1gHDf4J2KE153Yf9BuiUKYMaxlTDM=
 github.com/bxcodec/faker/v3 v3.5.0 h1:Rahy6dwbd6up0wbwbV7dFyQb+jmdC51kpATuUdnzfMg=
 github.com/bxcodec/faker/v3 v3.5.0/go.mod h1:gF31YgnMSMKgkvl+fyEo1xuSMbEuieyqfeslGYFjneM=
