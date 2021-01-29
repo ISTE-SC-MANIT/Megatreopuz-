@@ -56,6 +56,8 @@ github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217181635-ae578e71cc71 h
 github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217181635-ae578e71cc71/go.mod h1:ubLWegP6mcN2PJ9EnivqMivVOanndHyRwNJ9iZ2UlAI=
 github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217183630-392f9fced832 h1:b8dxBg5casVuPb5UshnHp5G0iVemXVnT1YYiUsRdWwA=
 github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217183630-392f9fced832/go.mod h1:ubLWegP6mcN2PJ9EnivqMivVOanndHyRwNJ9iZ2UlAI=
+github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20210124084954-0e69f3fac044 h1:LZ13lE0QNYWmCrSV49XRxMgVisD6FOysfNUKUT8R/jE=
+github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20210124084954-0e69f3fac044/go.mod h1:ubLWegP6mcN2PJ9EnivqMivVOanndHyRwNJ9iZ2UlAI=
 github.com/aws/aws-sdk-go v1.29.15 h1:0ms/213murpsujhsnxnNKNeVouW60aJqSd992Ks3mxs=
 github.com/aws/aws-sdk-go v1.29.15/go.mod h1:1KvfttTE3SPKMpo8g2c6jL3ZKfXtFvKscTgahTma5Xg=
 github.com/benbjohnson/clock v1.0.3/go.mod h1:bGMdMPoPVvcYyt1gHDf4J2KE153Yf9BuiUKYMaxlTDM=

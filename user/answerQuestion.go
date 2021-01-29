@@ -43,31 +43,12 @@ func (s *Server) AnswerQuestion(ctx context.Context, req *pb.AnswerQuestion) (*p
 
 	var setUpdateFields bson.D
 	var answeredQuestionArray = u.AnsweredQuestions
-	var answerJson = `{questionId:"ASd",answerTime:"sadf"}`
+	var answerJSON = `{questionId:"ASd",answerTime:"sadf"}`
 	var new user.QuestionsAnswered
-	json.Unmarshal([]byte(answerJson), &new)
+	json.Unmarshal([]byte(answerJSON), &new)
 
 	var modifiedAnswerArray = append(answeredQuestionArray, new)
 	setUpdateFields = append(setUpdateFields, bson.E{Key: "answeredQuestions", Value: modifiedAnswerArray})
-	// if len(req.GetCollege()) > 0 {
-	// 	setUpdateFields = append(setUpdateFields, bson.E{Key: "college", Value: req.GetCollege()})
-	// }
-	// if len(req.GetUsername()) > 0 {
-	// 	setUpdateFields = append(setUpdateFields, bson.E{Key: "username", Value: req.GetUsername()})
-	// }
-	// if len(req.GetName()) > 0 {
-	// 	setUpdateFields = append(setUpdateFields, bson.E{Key: "name", Value: req.GetName()})
-	// }
-	// if len(req.GetPhone()) > 0 {
-	// 	setUpdateFields = append(setUpdateFields, bson.E{Key: "phone", Value: req.GetPhone()})
-	// }
-	// if len(req.GetCountry()) > 0 {
-	// 	setUpdateFields = append(setUpdateFields, bson.E{Key: "country", Value: req.GetCountry()})
-	// }
-
-	// if int(req.GetYear()) > 0 {
-	// 	setUpdateFields = append(setUpdateFields, bson.E{Key: "year", Value: int(req.GetYear())})
-	// }
 
 	_, updateErr := userCollection.UpdateOne(ctx, bson.D{
 		primitive.E{Key: "_id", Value: decoded.UID},
