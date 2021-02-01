@@ -4,8 +4,9 @@ import "go.mongodb.org/mongo-driver/bson/primitive"
 
 // QuestionsAnswered holds the question-answer record
 type QuestionsAnswered struct {
-	QuestionID primitive.ObjectID `bson:"question_Id"`
-	AnswerTime primitive.DateTime `bson:"answerTime"`
+	QuestionID string `bson:"question_Id"`
+	AnswerTime string `bson:"answerTime"`
+	QuestionNo int    `bson:"questionNo"`
 }
 
 // User : The struct to map to user collection
