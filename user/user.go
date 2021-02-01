@@ -10,13 +10,14 @@ type QuestionsAnswered struct {
 
 // User : The struct to map to user collection
 type User struct {
-	ID                string  `bson:"_id,omitempty"`
+	ID                string              `bson:"_id,omitempty"`
 	Username          string              `bson:"username"`
 	Name              string              `bson:"name"`
 	Phone             string              `bson:"phone"`
 	College           string              `bson:"college"`
 	Country           string              `bson:"country"`
 	Year              int                 `bson:"year"`
+	TotalAttempts     int                 `bson:"attempts"`
 	Rank              int                 `bson:"rank"`
 	CreatedAt         primitive.DateTime  `bson:"createdAt"`
 	UpdatedAt         primitive.DateTime  `bson:"updatedAt"`
