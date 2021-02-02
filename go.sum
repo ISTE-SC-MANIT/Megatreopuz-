@@ -58,6 +58,8 @@ github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217183630-392f9fced832 h
 github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20201217183630-392f9fced832/go.mod h1:ubLWegP6mcN2PJ9EnivqMivVOanndHyRwNJ9iZ2UlAI=
 github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20210124084954-0e69f3fac044 h1:LZ13lE0QNYWmCrSV49XRxMgVisD6FOysfNUKUT8R/jE=
 github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20210124084954-0e69f3fac044/go.mod h1:ubLWegP6mcN2PJ9EnivqMivVOanndHyRwNJ9iZ2UlAI=
+github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20210201175018-abc125187505 h1:3nfEkHeJL7pfzQmsRL9g6zj2EsEN3IB4b1KWYTJrq0Y=
+github.com/ISTE-SC-MANIT/megatreopuz-models v0.0.0-20210201175018-abc125187505/go.mod h1:ubLWegP6mcN2PJ9EnivqMivVOanndHyRwNJ9iZ2UlAI=
 github.com/aws/aws-sdk-go v1.29.15 h1:0ms/213murpsujhsnxnNKNeVouW60aJqSd992Ks3mxs=
 github.com/aws/aws-sdk-go v1.29.15/go.mod h1:1KvfttTE3SPKMpo8g2c6jL3ZKfXtFvKscTgahTma5Xg=
 github.com/benbjohnson/clock v1.0.3/go.mod h1:bGMdMPoPVvcYyt1gHDf4J2KE153Yf9BuiUKYMaxlTDM=
@@ -222,6 +224,7 @@ github.com/yuin/goldmark v1.1.25/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9de
 go.mongodb.org/mongo-driver v1.3.5/go.mod h1:Ual6Gkco7ZGQw8wE1t4tLnvBsf6yVSM60qW6TgOeJ5c=
 go.mongodb.org/mongo-driver v1.4.0 h1:C8rFn1VF4GVEM/rG+dSoMmlm2pyQ9cs2/oRtUATejRU=
 go.mongodb.org/mongo-driver v1.4.0/go.mod h1:llVBH2pkj9HywK0Dtdt6lDikOjFLbceHVu/Rc0iMKLs=
+go.mongodb.org/mongo-driver v1.4.5 h1:TLtO+iD8krabXxvY1F1qpBOHgOxhLWR7XsT7kQeRmMY=
 go.opencensus.io v0.21.0/go.mod h1:mSImk1erAIZhrmZN+AvHh14ztQfjbGwt4TtuofqLduU=
 go.opencensus.io v0.22.0/go.mod h1:+kGneAE2xo2IficOXnaByMWTGM9T73dGwxeWcUqIpI8=
 go.opencensus.io v0.22.2/go.mod h1:yxeiOL68Rb0Xd1ddK5vPZ/oVn4vY4Ynel7k9FzqtOIw=

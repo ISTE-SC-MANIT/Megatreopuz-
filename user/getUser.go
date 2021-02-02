@@ -28,5 +28,5 @@ func (s *Server) GetPlayer(ctx context.Context, req *pb.Empty) (*pb.GetPlayerRes
 		return nil, status.Errorf(codes.Unauthenticated, "User has been not initialised")
 	}
 
-	return &pb.GetPlayerResponse{Id: u.ID, Username: u.Username, Name: u.Name, College: u.College, Phone: u.Phone, Country: u.Country}, nil
+	return &pb.GetPlayerResponse{Id: u.ID, Username: u.Username, Year: uint32(u.Year), Name: u.Name, College: u.College, Phone: u.Phone, Country: u.Country, TotalSolvedQuestions: uint32(len(u.AnsweredQuestions)), Attempts: uint32(u.TotalAttempts)}, nil
 }
