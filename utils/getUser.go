@@ -23,6 +23,7 @@ func GetUserFromFirebase(ctx context.Context, a *auth.Client) (*auth.Token, erro
 
 	decoded, err := a.VerifySessionCookieAndCheckRevoked(ctx, value)
 	if err != nil {
+		fmt.Println(err)
 		return nil, fmt.Errorf("cookie could not be verified")
 	}
 
