@@ -20,7 +20,7 @@ func GetUserFromFirebase(ctx context.Context, a *auth.Client) (*auth.Token, erro
 	}
 
 	value := accessTokenSlice[0]
-
+	fmt.Println(value)
 	decoded, err := a.VerifySessionCookieAndCheckRevoked(ctx, value)
 	if err != nil {
 		fmt.Println(err)
