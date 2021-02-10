@@ -36,6 +36,7 @@ func (s *Server) GetNextQuestion(ctx context.Context, req *pb.Empty) (*pb.GetNex
 	questionCollection := database.Collection(os.Getenv("MONGODB_QUESTIONCOLLECTION"))
 
 	if err := questionCollection.FindOne(ctx, bson.M{"questionNo": currentQuestion}).Decode(&q); err != nil {
+		log.Println(err)
 		return nil, status.Errorf(codes.PermissionDenied, "Invalid Question")
 	}
 
