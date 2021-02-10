@@ -9,7 +9,6 @@ import (
 	proto "github.com/ISTE-SC-MANIT/megatreopuz-user/protos"
 	"github.com/ISTE-SC-MANIT/megatreopuz-user/user"
 
-	
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 )
@@ -35,6 +34,7 @@ func Start() {
 	mongo, err := ConnectToMongoDB()
 
 	log.Print(`Pinging MongoDB`)
+	log.Print(err)
 
 	// Test the mongoDB connection
 	err = mongo.Ping(context.Background(), nil)
