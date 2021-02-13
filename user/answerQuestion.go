@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"fmt"
-
+	"strings"
 	"github.com/ISTE-SC-MANIT/megatreopuz-models/question"
 	"github.com/ISTE-SC-MANIT/megatreopuz-models/user"
 	"go.mongodb.org/mongo-driver/bson"
@@ -50,7 +50,7 @@ func (s *Server) AnswerQuestion(ctx context.Context, req *pb.AnswerQuestion) (*p
 		return nil, status.Errorf(codes.PermissionDenied, "Invalid Question")
 	}
 
-	if q.Answer != req.GetAnswer() {
+	if strings.ToLower(strings.ReplaceAll(q.Answer," ","")) != strings.ToLower(strings.ReplaceAll(req.GetAnswer()," ","")) {
 		return nil, status.Errorf(codes.InvalidArgument, "Wrong Answer")
 	}
 
