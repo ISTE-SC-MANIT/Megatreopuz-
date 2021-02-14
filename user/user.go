@@ -14,6 +14,7 @@ type HelpMessages struct {
 	messageTime string `bson:"messageTime"`
 	sender      string `bson:"sender"`
 	message     string `bson:"message"`
+	adminID     string `bson:"adminId"`
 }
 
 // User : The struct to map to user collection
