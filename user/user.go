@@ -9,6 +9,13 @@ type QuestionsAnswered struct {
 	QuestionNo int    `bson:"questionNo"`
 }
 
+// HelpMessages holds the question-answer messages record
+type HelpMessages struct {
+	messageTime string `bson:"messageTime"`
+	sender      string `bson:"sender"`
+	message     string `bson:"message"`
+}
+
 // User : The struct to map to user collection
 type User struct {
 	ID                string              `bson:"_id,omitempty"`
@@ -23,4 +30,5 @@ type User struct {
 	CreatedAt         primitive.DateTime  `bson:"createdAt"`
 	UpdatedAt         primitive.DateTime  `bson:"updatedAt"`
 	AnsweredQuestions []QuestionsAnswered `bson:"answeredQuestions"`
+	Chats             []HelpMessages      `bson:"chats"`
 }
