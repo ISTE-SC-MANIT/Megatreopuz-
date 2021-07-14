@@ -7,9 +7,9 @@
     <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg" alt="contributions" />
   </a>
   <a href="https://github.com/ISTE-SC-MANIT/megatreopuz-ui/releases">
-    <img src="https://img.shields.io/github/v/release/ISTE-SC-MANIT/megatreopuz-1.0" alt="release" />
+    <img src="https://img.shields.io/github/v/release/ISTE-SC-MANIT/Megatreopuz-1.0" alt="release" />
   </a>
-  <a href="https://github.com/ISTE-SC-MANIT/megatreopuz-ui/blob/master/LICENSE">
+  <a href="https://github.com/ISTE-SC-MANIT/Megatreopuz-1.0/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-orange.svg" alt="license-mit" />
   </a>
 </p>  
