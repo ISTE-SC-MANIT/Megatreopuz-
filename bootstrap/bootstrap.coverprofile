@@ -1,0 +1,14 @@
+mode: atomic
+github.com/ISTE-SC-MANIT/megatreopuz-auth/bootstrap/connectFirebase.go:19.32,22.2 2 1
+github.com/ISTE-SC-MANIT/megatreopuz-auth/bootstrap/start.go:18.35,20.16 2 0
+github.com/ISTE-SC-MANIT/megatreopuz-auth/bootstrap/start.go:25.2,33.16 6 0
+github.com/ISTE-SC-MANIT/megatreopuz-auth/bootstrap/start.go:20.16,22.3 1 0
+github.com/ISTE-SC-MANIT/megatreopuz-auth/bootstrap/start.go:33.16,35.3 1 0
+github.com/ISTE-SC-MANIT/megatreopuz-auth/bootstrap/start.go:41.14,44.16 2 0
+github.com/ISTE-SC-MANIT/megatreopuz-auth/bootstrap/start.go:48.2,54.16 6 0
+github.com/ISTE-SC-MANIT/megatreopuz-auth/bootstrap/start.go:58.2,60.16 3 0
+github.com/ISTE-SC-MANIT/megatreopuz-auth/bootstrap/start.go:65.2,73.16 6 0
+github.com/ISTE-SC-MANIT/megatreopuz-auth/bootstrap/start.go:44.16,46.3 1 0
+github.com/ISTE-SC-MANIT/megatreopuz-auth/bootstrap/start.go:54.16,56.3 1 0
+github.com/ISTE-SC-MANIT/megatreopuz-auth/bootstrap/start.go:60.16,62.3 1 0
+github.com/ISTE-SC-MANIT/megatreopuz-auth/bootstrap/start.go:73.16,75.3 1 0
